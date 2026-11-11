@@ -1,0 +1,927 @@
+@import url("https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Special+Elite&family=Courier+Prime:wght@400;700&family=Cinzel:wght@500;700;900&family=Share+Tech+Mono&display=swap");
+/* ═══ Horlogia - Manhwa — DA spatiale ═══ */
+#horlogia-hud, #horlogia-combat, .horlogia-app, .hz-dialog { --hz-bg: #070a18; --hz-ln: #5a7bff55; --hz-tx: #e6ecff; --hz-dim: #8ea0c8; --hz-c: #5ee0ff; }
+/* ── barre du haut ── */
+#horlogia-hud { --gc: #5ee0ff; position: fixed; top: 6px; left: 50%; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 12px 0 6px; border-radius: 14px; color: var(--hz-tx); font-family: "Rajdhani", sans-serif; user-select: none;
+  background: radial-gradient(1px 1px at 30px 12px, #fff, transparent), radial-gradient(1px 1px at 160px 34px, #fffa, transparent), radial-gradient(1px 1px at 300px 10px, #fff, transparent), radial-gradient(1px 1px at 420px 30px, #fff9, transparent),
+    radial-gradient(60% 140% at 0 50%, color-mix(in srgb, var(--gc) 26%, transparent), transparent 70%), radial-gradient(60% 140% at 100% 50%, #a46bff33, transparent 70%), linear-gradient(180deg, #121a3cf2, #070a18f2);
+  border: 1px solid color-mix(in srgb, var(--gc) 55%, transparent); box-shadow: 0 0 22px -8px var(--gc), 0 8px 22px #000a, inset 0 1px 0 #ffffff22; white-space: nowrap; }
+#horlogia-hud .hz-grip { width: 14px; display: grid; place-items: center; color: #5f7099; cursor: grab; font-size: 12px; }
+#horlogia-hud a { cursor: pointer; color: inherit; text-decoration: none; }
+#horlogia-hud .hz-grp { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 9px; font: 700 12px "Rajdhani", sans-serif; letter-spacing: .06em; color: #fff;
+  background: color-mix(in srgb, var(--gc) 22%, #070a18); border: 1px solid color-mix(in srgb, var(--gc) 65%, transparent); box-shadow: 0 2px 0 color-mix(in srgb, var(--gc) 25%, #000); }
+#horlogia-hud .hz-grp i { color: var(--gc); }
+#horlogia-hud .hz-date { display: flex; flex-direction: column; line-height: 1.05; padding: 0 4px; }
+#horlogia-hud .hz-date b { font: 800 15px "Rajdhani", sans-serif; letter-spacing: .05em; color: #fff; text-shadow: 0 0 10px color-mix(in srgb, var(--gc) 60%, transparent); }
+#horlogia-hud .hz-date small { font: 600 10.5px "Share Tech Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--hz-dim); }
+#horlogia-hud .hz-date:hover b { color: var(--gc); }
+#horlogia-hud .hz-time { display: inline-flex; align-items: center; gap: 7px; padding: 0 12px; height: 32px; border-radius: 10px; background: #02040ccc; border: 1px solid color-mix(in srgb, var(--gc) 45%, transparent); box-shadow: inset 0 0 12px -6px var(--gc); }
+#horlogia-hud .hz-time b { font: 700 19px "Orbitron", "Share Tech Mono", monospace; letter-spacing: .06em; color: #e9fdff; text-shadow: 0 0 8px var(--gc), 0 0 16px color-mix(in srgb, var(--gc) 50%, transparent); font-variant-numeric: tabular-nums; }
+#horlogia-hud .hz-dot { width: 7px; height: 7px; border-radius: 50%; background: #ff5d6c; box-shadow: 0 0 6px #ff5d6c; }
+#horlogia-hud.play .hz-dot { background: #3ddc84; box-shadow: 0 0 8px #3ddc84; animation: hzBlink 1s steps(2) infinite; }
+@keyframes hzBlink { 50% { opacity: .25; } }
+#horlogia-hud .hz-season { --sc: #c0c8e0; display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: 13px; font: 700 12px "Rajdhani", sans-serif; color: color-mix(in srgb, var(--sc) 40%, #fff); border: 1px solid color-mix(in srgb, var(--sc) 70%, transparent); background: color-mix(in srgb, var(--sc) 16%, #070a18); }
+#horlogia-hud .hz-season i { color: var(--sc); text-shadow: 0 0 6px var(--sc); }
+#horlogia-hud .hz-wx { display: inline-flex; align-items: center; gap: 5px; font: 700 14px "Rajdhani", sans-serif; color: #fff; } #horlogia-hud .hz-wx i { color: #ffd36b; text-shadow: 0 0 6px #ffd36b88; font-size: 15px; }
+#horlogia-hud .hz-moon { width: 20px; height: 20px; display: block; filter: drop-shadow(0 0 4px #dfe6ff88); }
+#horlogia-hud .hz-evs { display: inline-flex; gap: 5px; } #horlogia-hud .hz-evs:empty { display: none; }
+#horlogia-hud .hz-ev { --ec: #ffd36b; display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px; border-radius: 12px; font: 700 11.5px "Rajdhani", sans-serif; color: #fff; border: 1px solid var(--ec); background: color-mix(in srgb, var(--ec) 22%, #070a18); box-shadow: 0 0 10px -3px var(--ec); }
+#horlogia-hud .hz-ev i { color: var(--ec); }
+#horlogia-hud .hz-ctl { display: inline-flex; gap: 5px; padding-left: 8px; border-left: 1px solid #ffffff22; }
+#horlogia-hud .hz-ctl a { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; color: #dfe6ff; background: linear-gradient(180deg, #1a2550, #0b1230); border: 1px solid #3a4f8a; box-shadow: 0 2px 0 #050914, inset 0 1px 0 #ffffff22; transition: transform .1s, box-shadow .15s; }
+#horlogia-hud .hz-ctl a:hover { transform: translateY(-1px); box-shadow: 0 3px 0 #050914, 0 0 10px -2px var(--gc); color: #fff; }
+#horlogia-hud .hz-ctl a.pp { color: #fff; background: linear-gradient(180deg, #2fd27a, #127a44); border-color: #7dffb8; }
+#horlogia-hud.play .hz-ctl a.pp { background: linear-gradient(180deg, #ff9a3d, #a8501a); border-color: #ffc890; }
+#horlogia-hud .hz-ctl a.on { background: linear-gradient(180deg, #ff5d6c, #8a1a2a); border-color: #ff9aa6; color: #fff; }
+#horlogia-hud .hz-advm { position: absolute; top: 52px; right: 40px; display: flex; flex-direction: column; min-width: 190px; padding: 6px; border-radius: 10px; background: #0b1230f5; border: 1px solid #5a7bff88; box-shadow: 0 10px 24px #000c; }
+#horlogia-hud .hz-advm[hidden] { display: none; }
+#horlogia-hud .hz-advm a { padding: 6px 10px; border-radius: 6px; font: 700 13px "Rajdhani", sans-serif; } #horlogia-hud .hz-advm a:hover { background: #5ee0ff22; color: #fff; }
+#horlogia-hud .hz-advm a.all.on { color: #ffd36b; } #horlogia-hud .hz-advm small { padding: 0 10px 4px; color: var(--hz-dim); font-size: 11px; } #horlogia-hud .hz-advm hr { border: 0; border-top: 1px solid #ffffff1a; margin: 4px 0; }
+/* ── mode combat ── */
+#horlogia-combat { --gc: #ff5d6c; position: fixed; top: 64px; left: 50%; transform: translateX(-50%); z-index: 1000; min-width: 340px; padding: 10px 18px 14px; border-radius: 18px; text-align: center; color: #fff; font-family: "Rajdhani", sans-serif;
+  background: radial-gradient(90% 70% at 50% 0, #ff3d5a44, transparent 70%), linear-gradient(180deg, #1a0a1af2, #07040cf2); border: 1.5px solid #ff5d6c; box-shadow: 0 0 30px -6px #ff3d5a, 0 12px 30px #000c, inset 0 1px 0 #ffffff33; }
+#horlogia-combat .hzc-top { display: flex; align-items: center; justify-content: center; gap: 8px; font: 800 13px "Orbitron", sans-serif; letter-spacing: .3em; color: #ffb3bc; cursor: grab; }
+#horlogia-combat .hzc-top small { font: 600 11px "Rajdhani", sans-serif; letter-spacing: .1em; color: #ff9aa6; }
+#horlogia-combat .hzc-time b { display: block; font: 900 64px/1 "Orbitron", monospace; letter-spacing: .04em; color: #fff; text-shadow: 0 0 14px #ff3d5a, 0 0 30px #ff3d5a88; font-variant-numeric: tabular-nums; margin: 6px 0 2px; }
+#horlogia-combat .hzc-time small { font: 700 13px "Share Tech Mono", monospace; letter-spacing: .2em; color: #ffd36b; }
+#horlogia-combat .hzc-st { margin: 4px 0 8px; font: 600 12px "Rajdhani", sans-serif; color: #ff9aa6; } #horlogia-combat.run .hzc-st { color: #7dffb8; }
+#horlogia-combat.run .hzc-time b { animation: hzPulse 2s ease-in-out infinite; } @keyframes hzPulse { 50% { text-shadow: 0 0 20px #ff3d5a, 0 0 40px #ff3d5aaa; } }
+#horlogia-combat .hzc-ctl { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+#horlogia-combat .hzc-ctl a { display: inline-flex; align-items: center; gap: 5px; height: 30px; padding: 0 11px; border-radius: 8px; cursor: pointer; font: 800 12.5px "Rajdhani", sans-serif; color: #fff; background: linear-gradient(180deg, #3a1a2a, #1a0812); border: 1px solid #ff5d6c88; box-shadow: 0 3px 0 #0a0306; }
+#horlogia-combat .hzc-ctl a:hover { border-color: #ff9aa6; box-shadow: 0 3px 0 #0a0306, 0 0 12px -3px #ff5d6c; } #horlogia-combat .hzc-ctl a:active { transform: translateY(2px); box-shadow: 0 1px 0 #0a0306; }
+#horlogia-combat .hzc-ctl a.big { background: linear-gradient(180deg, #2fd27a, #127a44); border-color: #7dffb8; } #horlogia-combat.run .hzc-ctl a.big { background: linear-gradient(180deg, #ff9a3d, #a8501a); border-color: #ffc890; }
+#horlogia-combat .hzc-ctl a.end { background: linear-gradient(180deg, #ff5d6c, #8a1a2a); }
+/* ── fenêtre ── */
+.horlogia-app .window-content { padding: 0; background: radial-gradient(1px 1px at 60px 80px, #fff, transparent), radial-gradient(1px 1px at 300px 200px, #fffa, transparent), radial-gradient(1px 1px at 520px 60px, #fff, transparent), radial-gradient(1px 1px at 760px 300px, #fff9, transparent),
+  radial-gradient(60% 50% at 90% 0, #6a3cff2e, transparent 70%), radial-gradient(60% 50% at 0 100%, #1fb6ff26, transparent 70%), linear-gradient(180deg, #0b1028, #05070f) !important; background-size: 840px 420px, 840px 420px, 840px 420px, 840px 420px, 100% 100%, 100% 100%, 100% 100% !important; color: var(--hz-tx); font-family: "Rajdhani", sans-serif; }
+.hz-wrap { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.hz-tabs { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--hz-ln); background: #070a18cc; }
+.hz-tabs > a { --tc: #5ee0ff; display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-radius: 9px; cursor: pointer; font: 800 13px "Rajdhani", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: color-mix(in srgb, var(--tc) 40%, #fff);
+  border: 1px solid color-mix(in srgb, var(--tc) 50%, transparent); background: color-mix(in srgb, var(--tc) 10%, #070a18); box-shadow: 0 3px 0 color-mix(in srgb, var(--tc) 22%, #000); }
+.hz-tabs > a i { color: var(--tc); } .hz-tabs > a.on { color: #fff; background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 55%, #0a1030), color-mix(in srgb, var(--tc) 22%, #060a1c)); border-color: var(--tc); box-shadow: 0 3px 0 color-mix(in srgb, var(--tc) 30%, #000), 0 0 14px -3px var(--tc); }
+.hz-sp { flex: 1; }
+.hz-btn { --bc: #5ee0ff; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 13px; border-radius: 8px; cursor: pointer; font: 800 12.5px "Rajdhani", sans-serif; letter-spacing: .06em; color: #fff !important; white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--bc) 75%, #fff 10%); background: linear-gradient(180deg, color-mix(in srgb, var(--bc) 50%, #fff 6%), color-mix(in srgb, var(--bc) 25%, #0a1030) 60%, color-mix(in srgb, var(--bc) 15%, #060a1c)); box-shadow: 0 3px 0 color-mix(in srgb, var(--bc) 30%, #000), inset 0 1px 0 #ffffff55; text-shadow: 0 1px 2px #0009; }
+.hz-btn:hover { filter: brightness(1.15); } .hz-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 color-mix(in srgb, var(--bc) 30%, #000); } .hz-btn.sm { height: 26px; padding: 0 9px; font-size: 12px; } .hz-btn.on { box-shadow: 0 3px 0 color-mix(in srgb, var(--bc) 30%, #000), 0 0 14px -2px var(--bc); }
+.hz-body { flex: 1; min-height: 0; overflow: auto; padding: 14px 16px 20px; }
+.hz-hint { color: var(--hz-dim); font-size: 12.5px; } .hz-none { color: var(--hz-dim); }
+.horlogia-app input, .horlogia-app select, .horlogia-app textarea, .hz-dialog input, .hz-dialog select, .hz-dialog textarea { background: #121b3e !important; border: 1px solid #4a64a8 !important; color: #fff !important; border-radius: 6px; height: 30px; font: 600 13.5px "Rajdhani", sans-serif; }
+.horlogia-app input[type=color], .hz-dialog input[type=color] { width: 34px; padding: 1px; }
+.horlogia-app .w3 { width: 58px !important; } .horlogia-app .w5 { width: 86px !important; } .horlogia-app .w8 { width: 120px !important; } .hz-dialog .w3 { width: 64px !important; } .hz-dialog .w5 { width: 110px !important; }
+/* calendrier */
+.hz-calh { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.hz-calh h2 { margin: 0; border: 0; font: 900 24px "Orbitron", sans-serif; letter-spacing: .08em; color: #fff; text-shadow: 0 0 14px #5ee0ff88; min-width: 260px; text-align: center; } .hz-calh h2 small { font-size: 12px; color: var(--hz-dim); }
+.hz-calh select { width: auto !important; } .hz-gname { --gc: #5ee0ff; color: var(--gc); font-size: 15px; }
+.hz-nav { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; cursor: pointer; color: #fff; background: radial-gradient(circle at 35% 30%, #5e8bff, #1a2a6a); box-shadow: 0 3px 0 #0a1230, 0 0 10px -2px #5e8bff; }
+.hz-seg { display: inline-flex; border: 1px solid #4a64a8; border-radius: 8px; overflow: hidden; } .hz-seg a { padding: 6px 12px; cursor: pointer; font-weight: 700; color: var(--hz-dim); } .hz-seg a.on { background: #5e8bff; color: #fff; }
+.hz-now { margin-left: auto; font: 700 13px "Share Tech Mono", monospace; color: #9fe7ff; } .hz-now i { color: #5ee0ff; }
+.hz-month { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 14px; }
+.hz-grid { --w: 7; display: grid; grid-template-columns: repeat(var(--w), minmax(0, 1fr)); gap: 5px; }
+.hz-wd { padding: 4px; text-align: center; font: 700 11px "Share Tech Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #9fb8e8; border-bottom: 1px solid var(--hz-ln); }
+.hz-day { position: relative; min-height: 92px; padding: 5px 6px; border-radius: 9px; border: 1px solid #2a3a6a; background: linear-gradient(180deg, #0f1838d9, #080d22d9); cursor: cell; user-select: none; transition: border-color .12s, box-shadow .12s; }
+.hz-day:hover { border-color: #5ee0ff88; } .hz-day.sel { border-color: #ffd36b; box-shadow: inset 0 0 0 1px #ffd36b, 0 0 12px -4px #ffd36b; background: #ffd36b14; }
+.hz-day > b { font: 800 15px "Orbitron", sans-serif; color: #cfe0ff; }
+.hz-day.today { border-color: #5ee0ff; box-shadow: 0 0 16px -4px #5ee0ff, inset 0 0 18px -10px #5ee0ff; } .hz-day.today > b { color: #06101f; background: #5ee0ff; padding: 0 6px; border-radius: 6px; box-shadow: 0 0 10px #5ee0ff; }
+.hz-sstart { --sc: #fff; position: absolute; right: 6px; top: 5px; color: var(--sc); text-shadow: 0 0 6px var(--sc); font-size: 12px; }
+.hz-ph { position: absolute; right: 24px; top: 8px; width: 10px; height: 10px; border-radius: 50%; } .hz-ph.full { background: #f2f4ff; box-shadow: 0 0 6px #fff; } .hz-ph.new { background: #0a0e22; border: 1px solid #8ea0c8; }
+.hz-evs { display: flex; flex-direction: column; gap: 3px; margin-top: 4px; }
+.hz-evc { --ec: #ffd36b; display: flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: 5px; font: 700 11.5px "Rajdhani", sans-serif; color: #fff; cursor: pointer; background: color-mix(in srgb, var(--ec) 30%, #0a0e22); border-left: 3px solid var(--ec); white-space: nowrap; overflow: hidden; }
+.hz-evc i { color: var(--ec); font-size: 10px; } .hz-evc span { overflow: hidden; text-overflow: ellipsis; } .hz-evs small { color: var(--hz-dim); }
+.hz-side { display: flex; flex-direction: column; gap: 6px; padding: 10px; border-radius: 12px; border: 1px solid var(--hz-ln); background: #070a18aa; align-self: start; }
+.hz-side h3 { margin: 0 0 4px; border: 0; font: 800 13px "Rajdhani", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #ffd36b; }
+.hz-evl { --ec: #ffd36b; display: flex; gap: 8px; padding: 7px 9px; border-radius: 9px; cursor: pointer; border: 1px solid color-mix(in srgb, var(--ec) 55%, transparent); background: color-mix(in srgb, var(--ec) 10%, #070a18); }
+.hz-evl > i { color: var(--ec); margin-top: 3px; } .hz-evl span { display: flex; flex-direction: column; min-width: 0; } .hz-evl b { color: #fff; } .hz-evl small { color: var(--hz-dim); font-size: 11.5px; } .hz-evl em { color: #cfd8f0; font-size: 12px; }
+.hz-year { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.hz-mini { padding: 8px; border-radius: 10px; border: 1px solid #2a3a6a; background: #0b1230cc; cursor: pointer; } .hz-mini:hover { border-color: #5ee0ff; } .hz-mini h4 { margin: 0 0 4px; border: 0; color: #9fe7ff; font: 800 13px "Rajdhani", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.hz-grid.mini { gap: 2px; } .hz-grid.mini .hz-wd { font-size: 9px; letter-spacing: 0; padding: 1px; } .hz-md { font: 600 11px "Rajdhani", sans-serif; font-style: normal; text-align: center; padding: 2px 0; border-radius: 4px; color: #cfe0ff; }
+.hz-md.today { background: #5ee0ff; color: #06101f; } .hz-md.ev { --ec: #ffd36b; box-shadow: inset 0 -2px 0 var(--ec); }
+/* groupes */
+.hz-gtools { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.hz-gcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); gap: 12px; }
+.hz-gcard { --gc: #5ee0ff; display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--gc) 55%, transparent); border-top: 3px solid var(--gc); background: radial-gradient(100% 60% at 0 0, color-mix(in srgb, var(--gc) 14%, transparent), transparent 60%), #080d22e6; }
+.hz-gh { display: flex; align-items: center; gap: 8px; } .hz-gh .hz-gn { flex: 1; font: 800 16px "Rajdhani", sans-serif !important; }
+.hz-gnow { display: flex; align-items: baseline; gap: 10px; } .hz-gnow b { font-size: 17px; color: #fff; } .hz-gnow span { font: 700 16px "Orbitron", monospace; color: var(--gc); text-shadow: 0 0 8px var(--gc); }
+.hz-row { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; } .hz-row label { display: inline-flex; align-items: center; gap: 6px; font: 700 11.5px "Share Tech Mono", monospace; letter-spacing: .06em; color: #9fb8e8; } .hz-row select { width: auto !important; }
+.hz-row > b { color: #cfe0ff; font-size: 13px; } .hz-set { padding: 6px; border-radius: 8px; background: #5ee0ff0d; border: 1px dashed #5ee0ff55; }
+.hz-sw { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font: 700 12.5px "Rajdhani", sans-serif; color: #dfe6ff; } .hz-sw input { width: 16px !important; height: 16px !important; margin: 0; }
+.hz-sw.feeds { padding: 6px 8px; border-radius: 8px; border: 1px solid #ffb23d66; background: #ffb23d0f; color: #ffe1b0; } .hz-sw.feeds i { color: #ffb23d; }
+.hz-mem { display: flex; flex-wrap: wrap; gap: 5px; }
+.hz-chip { display: inline-flex !important; align-items: center; gap: 6px; padding: 3px 9px 3px 3px; border-radius: 16px; cursor: pointer; border: 1px solid #2a3a6a; background: #0b1230; font: 600 12.5px "Rajdhani", sans-serif; color: #b9c8e8; }
+.hz-chip input { display: none; } .hz-chip img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; object-position: top; border: 0; } .hz-chip.on { border-color: var(--gc); background: color-mix(in srgb, var(--gc) 22%, #0b1230); color: #fff; } .hz-chip.via { border-style: dashed; border-color: var(--gc); color: #fff; }
+.hz-tag { padding: 1px 8px; border-radius: 8px; font: 700 10.5px "Share Tech Mono", monospace; color: #06101f; background: var(--gc, #5ee0ff); } .hz-tag.red { background: #ff5d6c; color: #fff; }
+.hz-x { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; cursor: pointer; color: #fff; background: radial-gradient(circle at 35% 30%, #ff8a96, #8a1a2a); box-shadow: 0 2px 0 #3a0a12; }
+/* calendriers */
+.hz-cals { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 14px; } .hz-cals aside { display: flex; flex-direction: column; gap: 6px; }
+.hz-cals aside > a:not(.hz-btn) { padding: 8px 10px; border-radius: 8px; cursor: pointer; border: 1px solid #2a3a6a; color: #cfe0ff; font-weight: 700; } .hz-cals aside > a.on { border-color: #a46bff; background: #a46bff22; color: #fff; box-shadow: 0 0 10px -3px #a46bff; }
+.hz-ced { display: flex; flex-direction: column; gap: 10px; } .hz-ced h4 { margin: 8px 0 2px; border: 0; font: 800 13px "Rajdhani", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #c9a8ff; } .hz-ced h4 small { color: var(--hz-dim); letter-spacing: 0; }
+.hz-list { display: flex; flex-direction: column; gap: 4px; } .hz-crow { display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 8px; border: 1px solid #2a3a6a; background: #0b1230aa; } .hz-crow span { color: var(--hz-dim); font-size: 12px; }
+.hz-crow > input:not([type=color]):not(.w3):not(.w5):not(.w8) { flex: 1; } .hz-mv { cursor: pointer; color: #8ea0c8; padding: 0 3px; } .hz-mv:hover { color: #fff; } .hz-crow .hz-x { width: 22px; height: 22px; font-size: 10px; }
+.hz-add { align-self: flex-start; padding: 4px 10px; border-radius: 8px; cursor: pointer; color: #9dffc8; border: 1px dashed #3ddc8488; font-weight: 700; }
+/* réglages */
+.hz-opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 12px; } .hz-card2 { padding: 12px; border-radius: 12px; border: 1px solid var(--hz-ln); background: #080d22e6; } .hz-card2 h3 { margin: 0 0 8px; border: 0; font: 800 14px "Rajdhani", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #ffd36b; }
+/* dialogues */
+.hz-form { display: flex; flex-direction: column; gap: 8px; } .hz-form label { display: flex; flex-direction: column; gap: 3px; font: 700 11px "Share Tech Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: #9fb8e8; }
+.hz-form textarea { min-height: 60px; height: auto; } .hz-form h5 { margin: 6px 0 0; border: 0; color: #9fb8e8; font: 700 11px "Share Tech Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+.hz-sw2, .hz-ig { display: flex; flex-wrap: wrap; gap: 5px; } .hz-sw2 label, .hz-ig label { display: inline-flex !important; cursor: pointer; } .hz-sw2 input[type=radio], .hz-ig input { position: absolute; opacity: 0; pointer-events: none; }
+.hz-sw2 span { width: 24px; height: 24px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 2px #0008; } .hz-sw2 input:checked + span { box-shadow: 0 0 0 2px #fff, 0 0 10px var(--c); }
+.hz-ig i { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 7px; background: #121a38; border: 1px solid #2a3a6a; color: #dfe6ff; } .hz-ig input:checked + i { background: #ffd36b; color: #1a1206; box-shadow: 0 0 10px #ffd36b; }
+.hz-card { display: flex; gap: 10px; align-items: center; } .hz-card > i { font-size: 22px; color: #ff5d6c; } .hz-card small { color: #ff9aa6; letter-spacing: .14em; }
+
+/* ═══════════ THÈMES (un par groupe) ═══════════ */
+:root {
+  --hz-noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .38  0 0 0 0 .24  0 0 0 0 .1  0 0 0 .2 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --hz-parch: var(--hz-noise), radial-gradient(ellipse at 18% 12%, #fff8e2 0, transparent 45%), radial-gradient(ellipse at 85% 90%, #c9a2603a, transparent 55%), radial-gradient(ellipse at 50% 50%, transparent 52%, #8a5a2a59 100%), linear-gradient(180deg, #f1e2bd, #e6cf9e);
+  --hz-gear: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'><g fill='none' stroke='%23c9a35a' stroke-opacity='.16'><circle r='38' stroke-width='14' stroke-dasharray='9 7'/><circle r='27' stroke-width='4'/><circle r='9' stroke-width='5'/><path d='M0-27V27M-27 0H27' stroke-width='4'/></g></svg>");
+  --hz-leather: var(--hz-noise), radial-gradient(ellipse at 50% 0, #5a3a2244, transparent 60%), linear-gradient(180deg, #3a2618, #1c120b);
+  --hz-brass: linear-gradient(180deg, #f2d48a, #c9973f 45%, #8a5c22);
+  --hz-rivets: radial-gradient(circle, #f6dc95 0 1.6px, #5a3a14 2.6px, transparent 3.2px);
+}
+.hz-th-spatial .hz-time b em, #horlogia-hud .hz-time b em, #horlogia-combat .hzc-time b em { font-style: normal; } #horlogia-hud .hz-time b u, #horlogia-combat .hzc-time b u, .hz-thp b u { text-decoration: none; } .hz-thp b em { font-style: normal; }
+#horlogia-combat .hzc-art { display: none; }
+
+/* ─────────── FANTASY : parchemin et encre ─────────── */
+#horlogia-hud.hz-th-parchemin, #horlogia-combat.hz-th-parchemin, :is(.horlogia-app, .hz-dialog).hz-th-parchemin { --hz-tx: #2b1d10; --hz-dim: #7a5a3a; --hz-ln: #8a6a4066; --hz-moonbg: #e8d6ae; }
+/* barre */
+#horlogia-hud.hz-th-parchemin { background: var(--hz-parch); color: #2b1d10; border: 1px solid #6b4a2a; border-radius: 3px; box-shadow: 0 6px 18px #0009, inset 0 0 16px #8a5a2a55; padding: 0 16px 0 12px; }
+#horlogia-hud.hz-th-parchemin::before, #horlogia-hud.hz-th-parchemin::after { content: ""; position: absolute; top: -5px; bottom: -5px; width: 11px; border-radius: 6px; background: linear-gradient(90deg, #6b4a2a, #e8d6ae 45%, #b8945e 70%, #6b4a2a); box-shadow: 0 2px 4px #0007; pointer-events: none; }
+#horlogia-hud.hz-th-parchemin::before { left: -7px; } #horlogia-hud.hz-th-parchemin::after { right: -7px; }
+#horlogia-hud.hz-th-parchemin .hz-grip { color: #8a6a40; }
+#horlogia-hud.hz-th-parchemin .hz-grp { background: #3d2612; color: #f3e3c0; border: 1px solid #2b1a0a; border-radius: 3px; box-shadow: none; font: 400 14px "IM Fell English SC", serif; letter-spacing: .03em; } #horlogia-hud.hz-th-parchemin .hz-grp i { color: #e0b95a; }
+#horlogia-hud.hz-th-parchemin .hz-date b { font: 400 18px "IM Fell English SC", serif; letter-spacing: .02em; color: #2b1d10; text-shadow: none; }
+#horlogia-hud.hz-th-parchemin .hz-date small { font: italic 400 12.5px "IM Fell English", serif; letter-spacing: 0; text-transform: none; color: #6b4a2a; } #horlogia-hud.hz-th-parchemin .hz-date:hover b { color: #8e1b1b; }
+#horlogia-hud.hz-th-parchemin .hz-time { background: #fff6df99; border: 1px solid #6b4a2a99; border-radius: 3px; box-shadow: inset 0 0 6px #8a5a2a44; }
+#horlogia-hud.hz-th-parchemin .hz-time b { font: 400 22px "IM Fell English", serif; letter-spacing: .02em; color: #2b1d10; text-shadow: none; }
+#horlogia-hud.hz-th-parchemin .hz-dot { background: #6b4a2a; box-shadow: none; } #horlogia-hud.hz-th-parchemin.play .hz-dot { background: #8e1b1b; box-shadow: 0 0 0 2px #8e1b1b33; }
+#horlogia-hud.hz-th-parchemin .hz-season { background: color-mix(in srgb, var(--sc) 14%, #fff6df); border: 1px solid color-mix(in srgb, var(--sc) 55%, #6b4a2a); border-radius: 3px; color: #2b1d10; font: 400 14px "IM Fell English SC", serif; } #horlogia-hud.hz-th-parchemin .hz-season i { color: color-mix(in srgb, var(--sc) 65%, #3a2410); text-shadow: none; }
+#horlogia-hud.hz-th-parchemin .hz-wx { color: #2b1d10; font: 400 16px "IM Fell English", serif; } #horlogia-hud.hz-th-parchemin .hz-wx i { color: #a8792a; text-shadow: none; }
+#horlogia-hud.hz-th-parchemin .hz-moon { filter: none; }
+#horlogia-hud.hz-th-parchemin .hz-ev { background: radial-gradient(circle at 30% 30%, #b02a2a, #6a1010); color: #f7e8c8; border: 1px solid #4a0a0a; border-radius: 12px; box-shadow: 0 1px 0 #3a0a0a, inset 0 0 0 2px #ffffff14; font: 400 13px "IM Fell English SC", serif; } #horlogia-hud.hz-th-parchemin .hz-ev i { color: #f3d58a; }
+#horlogia-hud.hz-th-parchemin .hz-ctl { border-left-color: #6b4a2a55; }
+#horlogia-hud.hz-th-parchemin .hz-ctl a { background: linear-gradient(180deg, #fbf0d5, #e3cc98); border: 1px solid #6b4a2a; border-radius: 4px; color: #2b1d10; box-shadow: 0 2px 0 #6b4a2a66; }
+#horlogia-hud.hz-th-parchemin .hz-ctl a:hover { box-shadow: 0 3px 0 #6b4a2a66; color: #8e1b1b; }
+#horlogia-hud.hz-th-parchemin .hz-ctl a.pp { background: linear-gradient(180deg, #4d7a36, #24451a); border-color: #1a3010; color: #f3e3c0; } #horlogia-hud.hz-th-parchemin.play .hz-ctl a.pp { background: linear-gradient(180deg, #b8893a, #6b4a1a); border-color: #4a3010; }
+#horlogia-hud.hz-th-parchemin .hz-ctl a.on { background: radial-gradient(circle at 35% 30%, #b02a2a, #5a0e0e); border-color: #3a0a0a; color: #f7e8c8; }
+#horlogia-hud.hz-th-parchemin .hz-advm { background: var(--hz-parch); border: 1px solid #6b4a2a; border-radius: 3px; color: #2b1d10; } #horlogia-hud.hz-th-parchemin .hz-advm a { font: 400 15px "IM Fell English", serif; } #horlogia-hud.hz-th-parchemin .hz-advm a:hover { background: #8e1b1b18; color: #8e1b1b; }
+#horlogia-hud.hz-th-parchemin .hz-advm a.all.on { color: #8e1b1b; } #horlogia-hud.hz-th-parchemin .hz-advm small { color: #6b4a2a; font-style: italic; } #horlogia-hud.hz-th-parchemin .hz-advm hr { border-top-color: #6b4a2a44; }
+/* combat : sablier sur parchemin */
+#horlogia-combat.hz-th-parchemin { background: var(--hz-parch); color: #2b1d10; border: 2px solid #6b4a2a; border-radius: 4px; box-shadow: 0 14px 34px #000b, inset 0 0 28px #8a5a2a77; font-family: "IM Fell English", serif; }
+#horlogia-combat.hz-th-parchemin .hzc-top { font: 400 17px "IM Fell English SC", serif; letter-spacing: .25em; color: #8e1b1b; } #horlogia-combat.hz-th-parchemin .hzc-top small { font: italic 400 13px "IM Fell English", serif; letter-spacing: 0; color: #6b4a2a; }
+#horlogia-combat.hz-th-parchemin .hzc-art { display: block; margin: 4px 0 -4px; } #horlogia-combat.hz-th-parchemin .hzc-dial { display: none; }
+#horlogia-combat.hz-th-parchemin .hzc-glass { font-size: 38px; color: #a8792a; filter: drop-shadow(0 2px 0 #6b4a2a66); }
+#horlogia-combat.hz-th-parchemin.run .hzc-glass { animation: hzTurn 6s ease-in-out infinite; } @keyframes hzTurn { 0%, 80% { transform: rotate(0); } 100% { transform: rotate(180deg); } }
+#horlogia-combat.hz-th-parchemin .hzc-time b { font: 400 68px/1 "IM Fell English", serif; color: #2b1d10; text-shadow: 1px 1px 0 #8a5a2a33; animation: none; }
+#horlogia-combat.hz-th-parchemin .hzc-time small { font: 400 15px "IM Fell English SC", serif; letter-spacing: .12em; color: #8e1b1b; }
+#horlogia-combat.hz-th-parchemin .hzc-st { font: italic 400 14px "IM Fell English", serif; color: #6b4a2a; } #horlogia-combat.hz-th-parchemin.run .hzc-st { color: #3d6a2a; }
+#horlogia-combat.hz-th-parchemin .hzc-ctl a { background: linear-gradient(180deg, #fbf0d5, #e3cc98); border: 1px solid #6b4a2a; border-radius: 4px; color: #2b1d10; box-shadow: 0 2px 0 #6b4a2a66; font: 400 14px "IM Fell English SC", serif; }
+#horlogia-combat.hz-th-parchemin .hzc-ctl a.big { background: linear-gradient(180deg, #4d7a36, #24451a); border-color: #1a3010; color: #f3e3c0; } #horlogia-combat.hz-th-parchemin.run .hzc-ctl a.big { background: linear-gradient(180deg, #b8893a, #6b4a1a); color: #f3e3c0; }
+#horlogia-combat.hz-th-parchemin .hzc-ctl a.end { background: radial-gradient(circle at 35% 30%, #b02a2a, #5a0e0e); border-color: #3a0a0a; color: #f7e8c8; }
+/* fenêtre et dialogues */
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin { background: var(--hz-parch) !important; border: 1px solid #6b4a2a !important; box-shadow: 0 14px 40px #000b !important; color: #2b1d10; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .window-header { background: linear-gradient(180deg, #5a3a1e, #3d2612) !important; color: #f3e3c0 !important; border-bottom: 2px solid #a8792a !important; font-family: "IM Fell English SC", serif; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .window-header * { color: #f3e3c0 !important; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .window-content { background: var(--hz-parch) !important; background-size: auto !important; color: #2b1d10; font-family: "IM Fell English", Georgia, serif; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-tabs { background: transparent; border-bottom: 3px double #6b4a2a66; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-tabs > a:not(.hz-btn) { font: 400 16px "IM Fell English SC", serif; letter-spacing: .03em; text-transform: none; color: #2b1d10; background: #fff3d666; border: 1px solid #8a6a4088; border-radius: 3px; box-shadow: none; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-tabs > a:not(.hz-btn) i { color: color-mix(in srgb, var(--tc) 45%, #3a2410); }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-tabs > a:not(.hz-btn).on { background: #3d2612; color: #f3e3c0; border-color: #2b1a0a; box-shadow: 0 2px 0 #2b1a0a55; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-tabs > a:not(.hz-btn).on i { color: #e0b95a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-btn { background: linear-gradient(180deg, #fbf0d5, #e8d3a4); color: #2b1d10 !important; border: 1px solid #6b4a2a; border-radius: 4px; box-shadow: 0 2px 0 #6b4a2a66; text-shadow: none; font: 400 15px "IM Fell English SC", serif; letter-spacing: .02em; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-btn i { color: color-mix(in srgb, var(--bc) 45%, #3a2410); } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-btn.on { box-shadow: 0 2px 0 #6b4a2a66, inset 0 0 0 2px #8e1b1b55; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(input, select, textarea) { background: #fbf3dc !important; border: 1px solid #8a6a40 !important; color: #2b1d10 !important; border-radius: 3px; font: 400 15px "IM Fell English", serif; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-calh h2 { font: 400 32px "IM Fell English SC", serif; letter-spacing: .04em; color: #2b1d10; text-shadow: none; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-calh h2::before { content: "❦ "; color: #8e1b1b; font-size: .7em; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-calh h2::after { content: " ❦"; color: #8e1b1b; font-size: .7em; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-nav { background: radial-gradient(circle at 35% 30%, #b02a2a, #5a0e0e); color: #f3e3c0; box-shadow: 0 2px 0 #3a0a0a, inset 0 0 0 3px #ffffff14; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-seg { border-color: #8a6a40; border-radius: 3px; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-seg a { color: #6b4a2a; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-seg a.on { background: #3d2612; color: #f3e3c0; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-now { font: italic 400 15px "IM Fell English", serif; color: #6b4a2a; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-now i { color: #8e1b1b; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-wd { font: 400 14px "IM Fell English SC", serif; letter-spacing: .04em; text-transform: none; color: #6b4a2a; border-bottom: 1px solid #6b4a2a66; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-day { background: #fff6df59; border: 1px solid #8a6a4077; border-radius: 2px; box-shadow: inset 0 0 0 3px #fff6df44, inset 0 0 0 4px #8a6a4033; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-day:hover { border-color: #6b4a2a; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-day > b { font: 400 19px "IM Fell English SC", serif; color: #2b1d10; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-day.sel { border-color: #a8792a; background: #e0b95a33; box-shadow: inset 0 0 0 1px #a8792a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-day.today { border: 2px solid #8e1b1b; box-shadow: inset 0 0 18px -6px #8e1b1b66; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-day.today > b { background: radial-gradient(circle at 35% 30%, #b02a2a, #6a1010); color: #f7e8c8; border-radius: 50%; padding: 0 7px; box-shadow: 0 1px 0 #3a0a0a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-sstart { text-shadow: none; color: color-mix(in srgb, var(--sc) 60%, #3a2410); }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-ph.full { background: #fbf0d5; border: 1px solid #6b4a2a; box-shadow: none; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-ph.new { background: #2b1d10; border-color: #2b1d10; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-evc { background: color-mix(in srgb, var(--ec) 16%, #f7ecd0); color: #2b1d10; border-left: 0; border-radius: 3px; font: 400 13px "IM Fell English", serif; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-evc i { width: 15px; height: 15px; flex: none; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #b02a2a, #6a1010); color: #f3d58a; font-size: 8px; box-shadow: 0 1px 0 #3a0a0a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(.hz-side, .hz-card2, .hz-gcard, .hz-mini, .hz-crow) { background: #fff6df80; border: 1px solid #8a6a4088; border-radius: 3px; box-shadow: inset 0 0 0 3px #fff6df44, inset 0 0 0 4px #8a6a4026; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-gcard { border-top: 4px double color-mix(in srgb, var(--gc) 60%, #3a2410); }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(h3, h4, .hz-side h3, .hz-card2 h3, .hz-ced h4, .hz-mini h4) { font: 400 16px "IM Fell English SC", serif; letter-spacing: .04em; text-transform: none; color: #8e1b1b; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-evl { background: color-mix(in srgb, var(--ec) 10%, #fff6df); border: 1px solid color-mix(in srgb, var(--ec) 40%, #8a6a40); border-radius: 3px; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-evl b { color: #2b1d10; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-evl :is(small, em) { color: #6b4a2a; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-evl > i { color: #8e1b1b; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(.hz-row label, .hz-form label, .hz-form h5) { font: 400 14px "IM Fell English SC", serif; letter-spacing: .02em; text-transform: none; color: #6b4a2a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(.hz-row > b, .hz-gnow b, .hz-sw) { color: #2b1d10; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-gnow span { font: 400 19px "IM Fell English", serif; color: #8e1b1b; text-shadow: none; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-sw.feeds { background: #a8792a1a; border-color: #a8792a88; color: #5a3a1a; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-sw.feeds i { color: #a8792a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-set { background: #fff6df66; border: 1px dashed #8a6a40; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-chip { background: #fff6df; border-color: #8a6a4088; color: #2b1d10; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-chip.on { background: color-mix(in srgb, var(--gc) 22%, #fff6df); color: #2b1d10; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-chip.via { color: #2b1d10; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-tag { background: #3d2612; color: #f3e3c0; font-family: "IM Fell English SC", serif; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-tag.red { background: #8e1b1b; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-x { background: radial-gradient(circle at 35% 30%, #b02a2a, #5a0e0e); box-shadow: 0 2px 0 #3a0a0a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(.hz-hint, .hz-none, .hz-crow span) { color: #7a5a3a; font-style: italic; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-md { color: #2b1d10; font-family: "IM Fell English", serif; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-md.today { background: #8e1b1b; color: #f7e8c8; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-mini:hover { border-color: #6b4a2a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-cals aside > a:not(.hz-btn) { border-color: #8a6a4088; color: #2b1d10; border-radius: 3px; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-cals aside > a.on { background: #3d2612; color: #f3e3c0; box-shadow: none; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-add { color: #3d6a2a; border-color: #3d6a2a88; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-mv { color: #6b4a2a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-ig i { background: #fff6df; border-color: #8a6a40; color: #2b1d10; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-ig input:checked + i { background: #8e1b1b; color: #f7e8c8; box-shadow: none; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(.form-footer button, footer button) { background: linear-gradient(180deg, #fbf0d5, #e8d3a4) !important; color: #2b1d10 !important; border: 1px solid #6b4a2a !important; font-family: "IM Fell English SC", serif; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(p, b) { color: #2b1d10; }
+
+/* ─────────── STEAMPUNK : laiton et machine à écrire ─────────── */
+#horlogia-hud.hz-th-steampunk, #horlogia-combat.hz-th-steampunk, :is(.horlogia-app, .hz-dialog).hz-th-steampunk { --hz-tx: #f3e3c0; --hz-dim: #c9a35a; --hz-ln: #b8863b55; --hz-moonbg: #2a1a10; }
+/* tambours de compteur */
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk :is(.hz-time, .hzc-time) b em, .hz-th-steampunk.hz-tht .hz-thp b em { display: inline-block; width: .74em; text-align: center; font-style: normal; color: #1a120c; border-radius: 2px; margin: 0 1px;
+  background: linear-gradient(180deg, #4a3624 0, #d9c9a4 20%, #fff8e6 50%, #d9c9a4 80%, #4a3624 100%); box-shadow: inset 0 0 0 1px #0007, 0 0 0 1px #8a5c22; }
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk :is(.hz-time, .hzc-time) b u, .hz-th-steampunk.hz-tht .hz-thp b u { color: #e9c77a; padding: 0 1px; }
+/* barre */
+#horlogia-hud.hz-th-steampunk { background: var(--hz-gear) right -10px center / 74px no-repeat, var(--hz-leather); color: #f3e3c0; border: 2px solid #b8863b; border-radius: 10px; box-shadow: inset 0 0 0 1px #2a1a10, inset 0 0 0 3px #e9c77a44, 0 6px 18px #000a; padding: 0 14px 0 8px; }
+#horlogia-hud.hz-th-steampunk::before { content: ""; position: absolute; inset: 3px; pointer-events: none; background: var(--hz-rivets) 0 0 / 7px 7px no-repeat, var(--hz-rivets) 100% 0 / 7px 7px no-repeat, var(--hz-rivets) 0 100% / 7px 7px no-repeat, var(--hz-rivets) 100% 100% / 7px 7px no-repeat; }
+#horlogia-hud.hz-th-steampunk .hz-grip { color: #b8863b; }
+#horlogia-hud.hz-th-steampunk .hz-grp { background: var(--hz-brass); color: #2a1a0c; border: 1px solid #5a3a14; border-radius: 4px; font: 400 13.5px "Special Elite", monospace; letter-spacing: .04em; text-shadow: 0 1px 0 #fff6; box-shadow: inset 0 1px 0 #fff8, 0 2px 0 #2a1a0c; } #horlogia-hud.hz-th-steampunk .hz-grp i { color: #3a2410; }
+#horlogia-hud.hz-th-steampunk .hz-date b { font: 400 16.5px "Special Elite", monospace; letter-spacing: .02em; color: #f3e3c0; text-shadow: 0 1px 0 #000; }
+#horlogia-hud.hz-th-steampunk .hz-date small { font: 700 11px "Courier Prime", monospace; letter-spacing: .16em; color: #c9a35a; } #horlogia-hud.hz-th-steampunk .hz-date:hover b { color: #e9c77a; }
+#horlogia-hud.hz-th-steampunk .hz-time { background: #120b06; border: 1px solid #b8863b; border-radius: 6px; box-shadow: inset 0 2px 6px #000, 0 0 0 2px #3a2618, 0 0 0 3px #b8863b88; padding: 0 8px; }
+#horlogia-hud.hz-th-steampunk .hz-time b { font: 700 18px "Courier Prime", monospace; letter-spacing: 0; color: #1a120c; text-shadow: none; }
+#horlogia-hud.hz-th-steampunk .hz-dot { background: #6a4a1a; box-shadow: inset 0 0 0 1px #000; } #horlogia-hud.hz-th-steampunk.play .hz-dot { background: #ffb23d; box-shadow: 0 0 8px #ffb23d; }
+#horlogia-hud.hz-th-steampunk .hz-season { background: #2a1a10; border: 1px solid #b8863b; border-radius: 4px; color: #f3e3c0; font: 400 13px "Special Elite", monospace; } #horlogia-hud.hz-th-steampunk .hz-season i { color: color-mix(in srgb, var(--sc) 55%, #e9c77a); text-shadow: none; }
+#horlogia-hud.hz-th-steampunk .hz-wx { color: #f3e3c0; font: 700 15px "Courier Prime", monospace; } #horlogia-hud.hz-th-steampunk .hz-wx i { color: #e9c77a; text-shadow: none; }
+#horlogia-hud.hz-th-steampunk .hz-moon { filter: drop-shadow(0 0 2px #e9c77a66); }
+#horlogia-hud.hz-th-steampunk .hz-ev { background: #f3e6c8; color: #1a120c; border: 1px solid #8a5c22; border-radius: 3px; box-shadow: 0 2px 0 #0008; font: 700 12px "Courier Prime", monospace; } #horlogia-hud.hz-th-steampunk .hz-ev i { color: color-mix(in srgb, var(--ec) 70%, #1a120c); }
+#horlogia-hud.hz-th-steampunk .hz-ctl { border-left-color: #b8863b66; }
+#horlogia-hud.hz-th-steampunk .hz-ctl a { border-radius: 50%; background: radial-gradient(circle at 50% 40%, #3a2a1e, #120b06 70%); border: 2px solid #c9a35a; color: #f3e3c0; box-shadow: 0 3px 0 #5a3a14, inset 0 0 0 2px #120b06, inset 0 0 0 3px #f3e3c022; }
+#horlogia-hud.hz-th-steampunk .hz-ctl a:hover { box-shadow: 0 4px 0 #5a3a14, 0 0 8px #e9c77a66, inset 0 0 0 2px #120b06; }
+#horlogia-hud.hz-th-steampunk .hz-ctl a.pp { background: radial-gradient(circle at 50% 40%, #3a2a1e, #120b06 70%); border-color: #7dc96a; color: #b8f0a0; } #horlogia-hud.hz-th-steampunk.play .hz-ctl a.pp { border-color: #ffb23d; color: #ffcf7a; }
+#horlogia-hud.hz-th-steampunk .hz-ctl a.on { background: radial-gradient(circle at 50% 40%, #4a1a12, #1a0806 70%); border-color: #ff6a4a; color: #ffb0a0; }
+#horlogia-hud.hz-th-steampunk .hz-advm { background: var(--hz-leather); border: 1px solid #b8863b; color: #f3e3c0; } #horlogia-hud.hz-th-steampunk .hz-advm a { font: 400 14px "Special Elite", monospace; } #horlogia-hud.hz-th-steampunk .hz-advm a:hover { background: #b8863b33; color: #fff3d6; }
+#horlogia-hud.hz-th-steampunk .hz-advm a.all.on { color: #ffcf7a; } #horlogia-hud.hz-th-steampunk .hz-advm small { color: #c9a35a; } #horlogia-hud.hz-th-steampunk .hz-advm hr { border-top-color: #b8863b44; }
+/* combat : cadran à aiguille */
+#horlogia-combat.hz-th-steampunk { background: var(--hz-gear) center / 230px no-repeat, var(--hz-leather); color: #f3e3c0; border: 3px solid #b8863b; border-radius: 14px; box-shadow: inset 0 0 0 2px #2a1a10, inset 0 0 0 4px #e9c77a44, 0 14px 34px #000c; font-family: "Courier Prime", monospace; }
+#horlogia-combat.hz-th-steampunk::before { content: ""; position: absolute; inset: 5px; pointer-events: none; background: var(--hz-rivets) 0 0 / 8px 8px no-repeat, var(--hz-rivets) 100% 0 / 8px 8px no-repeat, var(--hz-rivets) 0 100% / 8px 8px no-repeat, var(--hz-rivets) 100% 100% / 8px 8px no-repeat; }
+#horlogia-combat.hz-th-steampunk .hzc-top { font: 400 15px "Special Elite", monospace; letter-spacing: .3em; color: #e9c77a; } #horlogia-combat.hz-th-steampunk .hzc-top small { font: 700 11px "Courier Prime", monospace; letter-spacing: .1em; color: #c9a35a; }
+#horlogia-combat.hz-th-steampunk .hzc-art { display: block; } #horlogia-combat.hz-th-steampunk .hzc-glass { display: none; }
+#horlogia-combat.hz-th-steampunk .hzc-dial { display: block; width: 116px; height: 116px; margin: 6px auto 2px; filter: drop-shadow(0 3px 3px #000a); }
+.hzc-face { fill: #f3e6c8; stroke: #b8863b; stroke-width: 5; } .hzc-tk { stroke: #2a1a0c; stroke-width: 1; } .hzc-tk.b { stroke-width: 2.4; } .hzc-hub { fill: #b8863b; stroke: #3a2410; stroke-width: 1.5; }
+.hzc-needle { stroke: #8e1b1b; stroke-width: 2.6; stroke-linecap: round; transform-origin: 0 0; transform: rotate(calc(var(--sec, 0) * 6deg)); transition: transform .45s cubic-bezier(.3, 1.6, .6, 1); }
+#horlogia-combat.hz-th-steampunk .hzc-time b { font: 700 46px/1.1 "Courier Prime", monospace; letter-spacing: 0; text-shadow: none; animation: none; color: #1a120c; }
+#horlogia-combat.hz-th-steampunk .hzc-time small { font: 400 14px "Special Elite", monospace; letter-spacing: .2em; color: #e9c77a; }
+#horlogia-combat.hz-th-steampunk .hzc-st { font: 700 12.5px "Courier Prime", monospace; color: #c9a35a; } #horlogia-combat.hz-th-steampunk.run .hzc-st { color: #9fe08a; }
+#horlogia-combat.hz-th-steampunk .hzc-ctl a { background: radial-gradient(circle at 50% 40%, #3a2a1e, #120b06 75%); border: 2px solid #c9a35a; border-radius: 16px; color: #f3e3c0; box-shadow: 0 3px 0 #5a3a14, inset 0 0 0 2px #120b06; font: 400 13px "Special Elite", monospace; }
+#horlogia-combat.hz-th-steampunk .hzc-ctl a.big { border-color: #7dc96a; color: #b8f0a0; } #horlogia-combat.hz-th-steampunk.run .hzc-ctl a.big { border-color: #ffb23d; color: #ffcf7a; background: radial-gradient(circle at 50% 40%, #3a2a1e, #120b06 75%); }
+#horlogia-combat.hz-th-steampunk .hzc-ctl a.end { border-color: #ff6a4a; color: #ffb0a0; background: radial-gradient(circle at 50% 40%, #4a1a12, #1a0806 75%); }
+/* fenêtre et dialogues */
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk { background: #1c120b !important; border: 2px solid #b8863b !important; box-shadow: inset 0 0 0 1px #000, 0 14px 40px #000c !important; color: #f3e3c0; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .window-header { background: var(--hz-brass) !important; color: #2a1a0c !important; border-bottom: 2px solid #5a3a14 !important; font-family: "Special Elite", monospace; text-shadow: 0 1px 0 #fff6; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .window-header * { color: #2a1a0c !important; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .window-content { background: var(--hz-gear) right -60px bottom -60px / 260px no-repeat, var(--hz-gear) left -40px top 40px / 150px no-repeat, var(--hz-leather) !important; background-size: 260px, 150px, auto, auto, auto !important; color: #f3e3c0; font-family: "Courier Prime", monospace; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-tabs { background: #120b06aa; border-bottom: 2px solid #b8863b66; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-tabs > a:not(.hz-btn) { font: 400 14.5px "Special Elite", monospace; letter-spacing: .03em; text-transform: none; color: #e9d3a0; background: linear-gradient(180deg, #3a2618, #24170e); border: 1px solid #b8863b88; border-radius: 6px; box-shadow: 0 2px 0 #0008; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-tabs > a:not(.hz-btn) i { color: color-mix(in srgb, var(--tc) 45%, #e9c77a); }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-tabs > a:not(.hz-btn).on { background: var(--hz-brass); color: #2a1a0c; border-color: #5a3a14; text-shadow: 0 1px 0 #fff6; box-shadow: inset 0 1px 0 #fff8, 0 2px 0 #2a1a0c; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-tabs > a:not(.hz-btn).on i { color: #3a2410; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-btn { background: var(--hz-brass); color: #2a1a0c !important; border: 1px solid #5a3a14; border-radius: 5px; text-shadow: 0 1px 0 #fff6; box-shadow: inset 0 1px 0 #fff8, 0 3px 0 #3a2410; font: 400 14px "Special Elite", monospace; letter-spacing: .02em; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-btn i { color: color-mix(in srgb, var(--bc) 50%, #2a1a0c); } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-btn.on { box-shadow: inset 0 1px 0 #fff8, 0 3px 0 #3a2410, 0 0 12px #ffb23d88; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk :is(input, select, textarea) { background: #f3e6c8 !important; border: 1px solid #8a5c22 !important; color: #1a120c !important; border-radius: 3px; font: 700 14px "Courier Prime", monospace; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-calh h2 { font: 400 28px "Special Elite", monospace; letter-spacing: .06em; color: #e9c77a; text-shadow: 0 2px 0 #000; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-nav { background: radial-gradient(circle at 40% 35%, #f5d98f, #b8863b 60%, #6a4a1a); color: #2a1a0c; box-shadow: 0 3px 0 #3a2410, inset 0 0 0 2px #5a3a1455; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-seg { border-color: #b8863b; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-seg a { color: #c9a35a; font-family: "Special Elite", monospace; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-seg a.on { background: #b8863b; color: #1a120c; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-now { font: 700 13px "Courier Prime", monospace; color: #e9c77a; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-now i { color: #e9c77a; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-wd { font: 400 13px "Special Elite", monospace; letter-spacing: .06em; color: #e9c77a; border-bottom: 1px solid #b8863b66; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-day { background: radial-gradient(circle at 50% 30%, #3a2a1e, #140d08 75%); border: 2px solid #8a6a3a; border-radius: 16px; box-shadow: 0 3px 0 #0a0604, inset 0 0 0 2px #120b06, inset 0 0 0 3px #f3e3c014; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-day:hover { border-color: #e9c77a; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-day > b { font: 400 18px "Special Elite", monospace; color: #f3e3c0; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-day.sel { border-color: #ffb23d; background: radial-gradient(circle at 50% 30%, #5a3a1e, #241408 75%); box-shadow: 0 3px 0 #0a0604, 0 0 12px -3px #ffb23d; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-day.today { border-color: #e9c77a; box-shadow: 0 3px 0 #0a0604, 0 0 14px -2px #ffb23d, inset 0 0 0 2px #120b06; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-day.today > b { background: var(--hz-brass); color: #1a120c; border-radius: 50%; padding: 0 6px; box-shadow: 0 1px 0 #000; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-sstart { text-shadow: none; color: color-mix(in srgb, var(--sc) 55%, #e9c77a); }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-ph.full { background: #f3e6c8; box-shadow: 0 0 4px #e9c77a; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-ph.new { background: #120b06; border-color: #c9a35a; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-evc { background: #f3e6c8; color: #1a120c; border-left: 3px solid var(--ec); border-radius: 2px; font: 700 11.5px "Courier Prime", monospace; box-shadow: 0 1px 0 #0008; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-evc i { color: color-mix(in srgb, var(--ec) 65%, #1a120c); }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk :is(.hz-side, .hz-card2, .hz-gcard, .hz-mini, .hz-crow) { background: linear-gradient(180deg, #2a1a10e6, #1a100ae6); border: 1px solid #b8863b77; border-radius: 8px; box-shadow: inset 0 0 0 1px #000, 0 2px 0 #0008; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-gcard { border-top: 3px solid color-mix(in srgb, var(--gc) 55%, #b8863b); }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk :is(h3, h4, .hz-side h3, .hz-card2 h3, .hz-ced h4, .hz-mini h4) { font: 400 15px "Special Elite", monospace; letter-spacing: .06em; text-transform: none; color: #e9c77a; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-evl { background: #f3e6c8; border: 1px solid #8a5c22; border-radius: 3px; box-shadow: 0 2px 0 #0008; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-evl b { color: #1a120c; font-family: "Special Elite", monospace; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-evl :is(small, em) { color: #5a3a14; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-evl > i { color: color-mix(in srgb, var(--ec) 65%, #1a120c); }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk :is(.hz-row label, .hz-form label, .hz-form h5) { font: 700 12px "Courier Prime", monospace; letter-spacing: .08em; color: #c9a35a; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk :is(.hz-row > b, .hz-gnow b, .hz-sw) { color: #f3e3c0; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-gnow b { font-family: "Special Elite", monospace; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-gnow span { font: 700 17px "Courier Prime", monospace; color: #e9c77a; text-shadow: none; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-sw.feeds { background: #ffb23d12; border-color: #b8863b; color: #f3d9a0; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-sw.feeds i { color: #e9c77a; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-set { background: #e9c77a0f; border: 1px dashed #b8863b77; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-chip { background: #24170e; border-color: #8a6a3a; color: #e9d3a0; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-chip.on { background: color-mix(in srgb, var(--gc) 22%, #24170e); color: #fff3d6; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-tag { background: #e9c77a; color: #1a120c; font-family: "Courier Prime", monospace; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-tag.red { background: #b83a2a; color: #fff; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk :is(.hz-hint, .hz-none, .hz-crow span) { color: #c9a35a; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-md { color: #e9d3a0; font-family: "Courier Prime", monospace; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-md.today { background: #e9c77a; color: #1a120c; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-mini:hover { border-color: #e9c77a; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-cals aside > a:not(.hz-btn) { border-color: #8a6a3a; color: #e9d3a0; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-cals aside > a.on { background: #b8863b; color: #1a120c; box-shadow: none; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-add { color: #b8f0a0; border-color: #7dc96a88; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-mv { color: #c9a35a; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-ig i { background: #24170e; border-color: #8a6a3a; color: #f3e3c0; } :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-ig input:checked + i { background: #e9c77a; color: #1a120c; box-shadow: none; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk :is(.form-footer button, footer button) { background: var(--hz-brass) !important; color: #2a1a0c !important; border: 1px solid #5a3a14 !important; font-family: "Special Elite", monospace; text-shadow: 0 1px 0 #fff6; }
+
+/* ─────────── choix du thème (carte du groupe) ─────────── */
+.hz-thr { gap: 10px; align-items: flex-start; } .hz-thr > b { align-self: center; }
+.hz-tht { display: inline-flex !important; flex-direction: column !important; align-items: center !important; gap: 4px !important; cursor: pointer; }
+.hz-tht input { position: absolute; opacity: 0; pointer-events: none; }
+.hz-thp { width: 116px; height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; transition: transform .12s; }
+.hz-tht:hover .hz-thp { transform: translateY(-2px); } .hz-tht.on .hz-thp { outline: 2px solid #ffd36b; outline-offset: 3px; }
+.hz-tht small { max-width: 118px; text-align: center; line-height: 1.15; font-size: 11px !important; text-transform: none !important; letter-spacing: 0 !important; }
+.hz-tht.hz-th-spatial .hz-thp { border-radius: 10px; background: radial-gradient(1px 1px at 20px 10px, #fff, transparent), radial-gradient(1px 1px at 90px 34px, #fff, transparent), linear-gradient(180deg, #121a3c, #070a18); border: 1px solid #5ee0ff; box-shadow: 0 0 12px -4px #5ee0ff; color: #5ee0ff; }
+.hz-tht.hz-th-spatial .hz-thp b { font: 700 16px "Orbitron", monospace; color: #e9fdff; text-shadow: 0 0 8px #5ee0ff; }
+.hz-tht.hz-th-parchemin .hz-thp { border-radius: 3px; background: var(--hz-parch); border: 1px solid #6b4a2a; box-shadow: inset 0 0 10px #8a5a2a55; color: #8e1b1b; }
+.hz-tht.hz-th-parchemin .hz-thp b { font: 400 20px "IM Fell English", serif; color: #2b1d10; }
+.hz-tht.hz-th-steampunk .hz-thp { border-radius: 8px; background: var(--hz-gear) right -8px center / 46px no-repeat, var(--hz-leather); border: 2px solid #b8863b; box-shadow: inset 0 0 0 2px #e9c77a33; color: #e9c77a; }
+.hz-tht.hz-th-steampunk .hz-thp b { font: 700 15px "Courier Prime", monospace; }
+
+/* 1.1.1 — chiffres lisibles sur parchemin (Cinzel), lune, cases */
+#horlogia-hud.hz-th-parchemin .hz-time b { font: 600 19px "Cinzel", serif; letter-spacing: .04em; }
+#horlogia-combat.hz-th-parchemin .hzc-time b { font: 700 58px/1.05 "Cinzel", serif; letter-spacing: .02em; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-gnow span, .hz-tht.hz-th-parchemin .hz-thp b { font-family: "Cinzel", serif; font-weight: 700; font-size: 16px; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-day > b { font: 600 16px "Cinzel", serif; } :is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-md { font-family: "Cinzel", serif; font-size: 10.5px; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin :is(input[type=number], .hz-now) { font-family: "Cinzel", serif; font-weight: 600; font-style: normal; }
+#horlogia-hud.hz-th-parchemin .hz-moon circle { stroke: #6b4a2a; stroke-opacity: 1; } #horlogia-hud.hz-th-parchemin .hz-moon path { fill: #a8792a; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin .hz-sw { font: 400 14.5px "IM Fell English", serif; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-sw { font: 700 13px "Courier Prime", monospace; }
+
+/* ═══════════ 1.2.0 ═══════════ */
+/* ── barre sur une ligne : jour de la semaine bien visible devant la date ── */
+#horlogia-hud > :not(.hz-banner):not(.hz-advm) { position: relative; z-index: 1; }
+#horlogia-hud .hz-date { flex-direction: row; align-items: center; gap: 8px; }
+#horlogia-hud .hz-date b.hz-wday { font: 800 13px "Orbitron", sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 3px 9px; border-radius: 7px; color: #06101f; background: var(--gc); box-shadow: 0 0 12px -2px var(--gc); text-shadow: none; }
+#horlogia-hud .hz-date b.hz-dtxt { font: 800 16px "Rajdhani", sans-serif; letter-spacing: .04em; color: #fff; }
+#horlogia-hud .hz-ev { max-width: 170px; overflow: hidden; text-overflow: ellipsis; } #horlogia-hud .hz-ev.more { padding: 0 7px; }
+#horlogia-hud.gm :is(.hz-date, .hz-time, .hz-wx) { cursor: pointer; border-radius: 9px; transition: background .15s, box-shadow .15s; }
+#horlogia-hud.gm :is(.hz-date, .hz-wx):hover { background: color-mix(in srgb, var(--gc) 14%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--gc) 50%, transparent); }
+#horlogia-hud .hz-wx { padding: 2px 6px; }
+#horlogia-hud.hz-th-parchemin .hz-date b.hz-wday { font: 400 18px "IM Fell English SC", serif; letter-spacing: .06em; text-transform: none; color: #f7e8c8; background: radial-gradient(circle at 30% 30%, #a82424, #6a1010); border: 1px solid #4a0a0a; border-radius: 4px; box-shadow: 0 1px 0 #3a0a0a; padding: 1px 9px; }
+#horlogia-hud.hz-th-parchemin .hz-date b.hz-dtxt { font: 400 18px "IM Fell English SC", serif; color: #2b1d10; }
+#horlogia-hud.hz-th-parchemin .hz-date b.hz-dtxt::first-letter { font-family: "Cinzel", serif; }
+#horlogia-hud.hz-th-steampunk .hz-date b.hz-wday { font: 400 15px "Special Elite", monospace; letter-spacing: .1em; color: #2a1a0c; background: var(--hz-brass); border: 1px solid #5a3a14; border-radius: 4px; box-shadow: inset 0 1px 0 #fff8, 0 2px 0 #2a1a0c; text-shadow: 0 1px 0 #fff6; padding: 2px 9px; }
+#horlogia-hud.hz-th-steampunk .hz-date b.hz-dtxt { font: 400 17px "Special Elite", monospace; color: #f3e3c0; }
+#horlogia-hud.hz-th-parchemin.gm :is(.hz-date, .hz-wx):hover { background: #8e1b1b14; box-shadow: 0 0 0 1px #8e1b1b55; }
+#horlogia-hud.hz-th-steampunk.gm :is(.hz-date, .hz-wx):hover { background: #e9c77a18; box-shadow: 0 0 0 1px #e9c77a77; }
+
+/* ── bannière de saison (barre du haut seulement) ── */
+:root {
+  --hz-bn-spring: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='74' height='46'><g fill='%23ffb7c5'><circle cx='12' cy='11' r='3.2'/><circle cx='16.5' cy='7.8' r='3.2'/><circle cx='21' cy='11' r='3.2'/><circle cx='19.2' cy='16' r='3.2'/><circle cx='13.8' cy='16' r='3.2'/></g><circle cx='16.5' cy='12.2' r='2.1' fill='%23ffe08a'/><ellipse cx='52' cy='30' rx='3.4' ry='1.7' fill='%23ff9fb5' transform='rotate(30 52 30)'/><ellipse cx='40' cy='40' rx='6' ry='2.2' fill='%2390d070' transform='rotate(-25 40 40)'/><ellipse cx='64' cy='12' rx='2.6' ry='1.4' fill='%23ffc9d6' transform='rotate(-40 64 12)'/></svg>");
+  --hz-bn-autumn: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='76' height='46'><path d='M10 32c0-11 9-18 20-18-1 11-9 19-20 18z' fill='%23d9622b'/><path d='M10 32l13-11' stroke='%237a3010' stroke-width='1.2'/><path d='M46 14c6-5 14-4 18 2-6 5-13 4-18-2z' fill='%23e8a030'/><path d='M46 14l18 2' stroke='%238a5010' stroke-width='.9'/><path d='M54 40c2-5 7-7 11-6-1 5-6 8-11 6z' fill='%23b8401a'/></svg>");
+  --hz-bn-winter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='62' height='46'><g stroke='%23ffffff' stroke-width='1.3' stroke-linecap='round'><path d='M15 6v17M6.5 14.5h17M9 8.5l12 12M21 8.5l-12 12'/><path d='M15 6l-2 2M15 6l2 2M15 23l-2-2M15 23l2-2'/></g><g fill='%23ffffff'><circle cx='42' cy='30' r='1.9'/><circle cx='32' cy='40' r='1.3'/><circle cx='52' cy='11' r='1.5'/><circle cx='56' cy='38' r='1'/></g></svg>");
+}
+#horlogia-hud .hz-banner { position: absolute; inset: 0; z-index: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+#horlogia-hud .hz-banner i { position: absolute; inset: 0; display: block; }
+#horlogia-hud .hz-banner .b2 { opacity: .5; background-repeat: repeat; background-size: auto 100%; -webkit-mask-image: linear-gradient(90deg, #000 0, #000a 22%, transparent 45%, transparent 60%, #000a 82%, #000 100%); mask-image: linear-gradient(90deg, #000 0, #000a 22%, transparent 45%, transparent 60%, #000a 82%, #000 100%); }
+#horlogia-hud.hz-se-spring { --se: #7fdc8a; } #horlogia-hud.hz-se-summer { --se: #ffd23a; } #horlogia-hud.hz-se-autumn { --se: #ff8a3d; } #horlogia-hud.hz-se-winter { --se: #9fd8ff; }
+#horlogia-hud:is(.hz-se-spring, .hz-se-summer, .hz-se-autumn, .hz-se-winter) .hz-banner .b1::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--se), transparent); box-shadow: 0 0 10px var(--se); }
+#horlogia-hud.hz-se-spring .hz-banner .b1 { background: radial-gradient(70% 160% at 0 100%, #7fdc8a40, transparent 60%), radial-gradient(60% 160% at 100% 0, #ffb7c533, transparent 60%); }
+#horlogia-hud.hz-se-spring .hz-banner .b2 { background-image: var(--hz-bn-spring); animation: hzDrift 40s linear infinite; }
+#horlogia-hud.hz-se-summer .hz-banner .b1 { background: radial-gradient(40% 220% at 0 50%, #ffd23a55, transparent 70%), repeating-conic-gradient(from 0deg at 0 50%, #ffd23a22 0 3deg, transparent 3deg 11deg), radial-gradient(50% 160% at 100% 100%, #ff9a3d2e, transparent 70%); }
+#horlogia-hud.hz-se-summer .hz-banner .b2 { opacity: 0; }
+#horlogia-hud.hz-se-autumn .hz-banner .b1 { background: radial-gradient(70% 160% at 0 100%, #ff8a3d40, transparent 60%), radial-gradient(60% 160% at 100% 0, #c0402033, transparent 60%); }
+#horlogia-hud.hz-se-autumn .hz-banner .b2 { background-image: var(--hz-bn-autumn); animation: hzDrift 50s linear infinite; }
+#horlogia-hud.hz-se-winter .hz-banner .b1 { background: linear-gradient(180deg, #d8f0ff33, transparent 55%), radial-gradient(60% 160% at 100% 100%, #9fd8ff33, transparent 60%), radial-gradient(50% 160% at 0 0, #ffffff22, transparent 60%); }
+#horlogia-hud.hz-se-winter .hz-banner .b2 { background-image: var(--hz-bn-winter); opacity: .55; animation: hzSnow 30s linear infinite; }
+@keyframes hzDrift { to { background-position: 296px 0; } } @keyframes hzSnow { to { background-position: 62px 92px; } }
+@media (prefers-reduced-motion: reduce) { #horlogia-hud .hz-banner .b2 { animation: none !important; } }
+/* parchemin : bannière à l'encre ; steampunk : bannière sur cuir */
+#horlogia-hud.hz-th-parchemin .hz-banner .b2 { opacity: .55; filter: sepia(.35) saturate(1.1); }
+#horlogia-hud.hz-th-parchemin.hz-se-winter .hz-banner .b2 { filter: brightness(.45) sepia(.4); opacity: .4; }
+#horlogia-hud.hz-th-parchemin.hz-se-winter .hz-banner .b1 { background: linear-gradient(180deg, #ffffff66, transparent 55%), radial-gradient(60% 160% at 100% 100%, #7ab0d044, transparent 60%); }
+#horlogia-hud.hz-th-parchemin.hz-se-summer .hz-banner .b1 { background: radial-gradient(40% 220% at 0 50%, #e0a02a55, transparent 70%), repeating-conic-gradient(from 0deg at 0 50%, #c8862a2a 0 3deg, transparent 3deg 11deg); }
+#horlogia-hud.hz-th-steampunk .hz-banner .b2 { opacity: .42; filter: sepia(.25); }
+
+/* ── bulle d'édition (date, heure, météo) ── */
+#horlogia-pop { --pb: linear-gradient(180deg, #121a3c, #070a18); --pbd: #5a7bffaa; --ptx: #e6ecff; --pdim: #8ea0c8; --pacc: #5ee0ff; --pin: #121b3e; --pinbd: #4a64a8; --pintx: #fff; --pbtn: linear-gradient(180deg, #1a2550, #0b1230); --pbtnbd: #3a4f8a; --pfont: "Rajdhani", sans-serif; --phead: "Orbitron", sans-serif;
+  position: fixed; z-index: 1001; min-width: 320px; max-width: min(560px, 96vw); padding: 12px 14px; border-radius: 12px; color: var(--ptx); font: 600 14px var(--pfont); background: var(--pb); border: 1px solid var(--pbd); box-shadow: 0 16px 36px #000c, 0 0 0 1px #0006; }
+#horlogia-pop.hz-th-parchemin { --pb: var(--hz-parch); --pbd: #6b4a2a; --ptx: #2b1d10; --pdim: #6b4a2a; --pacc: #8e1b1b; --pin: #fbf3dc; --pinbd: #8a6a40; --pintx: #2b1d10; --pbtn: linear-gradient(180deg, #fbf0d5, #e3cc98); --pbtnbd: #6b4a2a; --pfont: "IM Fell English", serif; --phead: "IM Fell English SC", serif; border-radius: 4px; }
+#horlogia-pop.hz-th-steampunk { --pb: var(--hz-leather); --pbd: #b8863b; --ptx: #f3e3c0; --pdim: #c9a35a; --pacc: #e9c77a; --pin: #f3e6c8; --pinbd: #8a5c22; --pintx: #1a120c; --pbtn: radial-gradient(circle at 50% 40%, #3a2a1e, #120b06 75%); --pbtnbd: #c9a35a; --pfont: "Courier Prime", monospace; --phead: "Special Elite", monospace; border-width: 2px; }
+#horlogia-pop h4 { margin: 0 0 10px; border: 0; font: 700 14px var(--phead); letter-spacing: .08em; color: var(--pacc); } #horlogia-pop h4 i { margin-right: 4px; }
+#horlogia-pop .hzp-row { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+#horlogia-pop label { display: flex; flex-direction: column; gap: 3px; font: 700 11px var(--pfont); letter-spacing: .06em; color: var(--pdim); } #horlogia-pop label.w { flex: 1; }
+#horlogia-pop :is(input, select) { height: 32px; padding: 0 8px; border-radius: 6px; background: var(--pin) !important; color: var(--pintx) !important; border: 1px solid var(--pinbd) !important; font: 700 15px var(--pfont); }
+#horlogia-pop input[type=number] { width: 78px; } #horlogia-pop select { min-width: 130px; }
+#horlogia-pop .hzp-row.big { justify-content: center; align-items: center; } #horlogia-pop .hzp-row.big input { width: 86px; height: 52px; text-align: center; font: 700 30px var(--pfont); } #horlogia-pop .hzp-row.big span { font: 700 30px var(--pfont); }
+#horlogia-pop a { cursor: pointer; text-decoration: none; }
+#horlogia-pop .hzp-row.q a, #horlogia-pop .hzp-temp a, #horlogia-pop .hzp-foot a, #horlogia-pop .hzp-cats a { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 28px; padding: 0 10px; border-radius: 7px; color: var(--ptx); background: var(--pbtn); border: 1px solid var(--pbtnbd); font: 700 12.5px var(--pfont); box-shadow: 0 2px 0 #0006; }
+#horlogia-pop :is(.hzp-row.q, .hzp-temp, .hzp-foot, .hzp-cats) a:hover { filter: brightness(1.15); box-shadow: 0 2px 0 #0006, 0 0 0 1px var(--pacc); }
+#horlogia-pop .hzp-foot { display: flex; justify-content: space-between; gap: 8px; margin-top: 6px; }
+#horlogia-pop .hzp-foot a.ok { background: var(--pacc); color: #0a0a12; border-color: var(--pacc); } #horlogia-pop.hz-th-parchemin .hzp-foot a.ok { background: radial-gradient(circle at 35% 30%, #b02a2a, #6a1010); color: #f7e8c8; border-color: #4a0a0a; } #horlogia-pop.hz-th-steampunk .hzp-foot a.ok { background: var(--hz-brass); color: #2a1a0c; border-color: #5a3a14; }
+#horlogia-pop .hzp-temp { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; }
+#horlogia-pop .hzp-temp input { width: 82px; height: 46px; text-align: center; font: 700 28px var(--pfont); } #horlogia-pop .hzp-temp b { font: 700 20px var(--pfont); color: var(--pacc); margin-right: 4px; }
+#horlogia-pop .hzp-temp a { min-width: 34px; height: 34px; } #horlogia-pop .hzp-temp a.roll { margin-left: 8px; color: var(--pacc); }
+#horlogia-pop .hzp-cats { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; } #horlogia-pop .hzp-cats a.on { background: var(--pacc); color: #0a0a12; border-color: var(--pacc); } #horlogia-pop.hz-th-parchemin .hzp-cats a.on { background: #3d2612; color: #f3e3c0; }
+#horlogia-pop .hzp-wx { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; width: 520px; max-width: 100%; } #horlogia-pop .hzp-wx[hidden] { display: none; }
+#horlogia-pop .hzp-wx a { --wc: #fff; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px 6px; border-radius: 9px; text-align: center; color: var(--ptx); background: color-mix(in srgb, var(--wc) 8%, transparent); border: 1px solid color-mix(in srgb, var(--wc) 30%, transparent); }
+#horlogia-pop .hzp-wx a i { font-size: 20px; color: var(--wc); filter: drop-shadow(0 0 4px color-mix(in srgb, var(--wc) 60%, transparent)); } #horlogia-pop .hzp-wx a span { font: 700 11px/1.15 var(--pfont); }
+#horlogia-pop .hzp-wx a:hover { border-color: var(--wc); } #horlogia-pop .hzp-wx a.on { border: 2px solid var(--pacc); background: color-mix(in srgb, var(--pacc) 18%, transparent); }
+#horlogia-pop.hz-th-parchemin .hzp-wx a i { color: color-mix(in srgb, var(--wc) 55%, #3a2410); filter: none; } #horlogia-pop.hz-th-parchemin .hzp-wx a { background: #fff6df88; border-color: #8a6a4066; border-radius: 3px; }
+#horlogia-pop.hz-th-steampunk .hzp-wx a { background: #120b06aa; border-color: #8a6a3a; }
+#horlogia-pop .hzp-hint { margin: 8px 0 0; font: italic 600 11.5px var(--pfont); color: var(--pdim); }
+
+/* ── combat : compte à rebours ── */
+#horlogia-combat .hzc-ctl.pre a { min-width: 52px; justify-content: center; } #horlogia-combat .hzc-ctl a.inf { color: #9fe7ff; }
+#horlogia-combat .hzc-free { display: inline-flex; align-items: center; gap: 0; } #horlogia-combat .hzc-free input { width: 56px; height: 30px; border-radius: 8px 0 0 8px; border: 1px solid #ff5d6c88; border-right: 0; background: #1a0812; color: #fff; text-align: center; font: 700 13px "Rajdhani", sans-serif; }
+#horlogia-combat .hzc-free a { border-radius: 0 8px 8px 0 !important; }
+#horlogia-combat.setup .hzc-time b { opacity: .45; } #horlogia-combat.setup .hzc-time small { visibility: hidden; }
+#horlogia-combat.low .hzc-time b { color: #ffd36b; animation: hzLow .5s ease-in-out infinite alternate; } @keyframes hzLow { to { transform: scale(1.04); } }
+#horlogia-combat.done { animation: hzDone .7s steps(2) 6; } #horlogia-combat.done .hzc-time b { color: #ff5d6c; } #horlogia-combat.done .hzc-st { color: #ffd36b !important; font-weight: 800; }
+@keyframes hzDone { 50% { box-shadow: 0 0 46px 6px #ff3d5a, 0 12px 30px #000c; } }
+#horlogia-combat.hz-th-parchemin .hzc-free input { background: #fbf3dc; color: #2b1d10; border-color: #6b4a2a; font-family: "Cinzel", serif; } #horlogia-combat.hz-th-parchemin .hzc-ctl a.inf { color: #2b5a8e; }
+#horlogia-combat.hz-th-parchemin.low .hzc-time b, #horlogia-combat.hz-th-parchemin.done .hzc-time b { color: #8e1b1b; }
+#horlogia-combat.hz-th-steampunk .hzc-free input { background: #f3e6c8; color: #1a120c; border-color: #c9a35a; font-family: "Courier Prime", monospace; } #horlogia-combat.hz-th-steampunk .hzc-ctl a.inf { color: #9fe7ff; }
+#horlogia-combat.hz-th-steampunk:is(.low, .done) .hzc-time b em { color: #a01818; }
+
+/* ── calendrier : sélection, jours teintés, bandes continues ── */
+.horlogia-app .hz-day.tint::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--dc); opacity: .14; pointer-events: none; }
+.horlogia-app .hz-day.sel { outline: 2px solid #ffd36b; outline-offset: -2px; } .horlogia-app.hz-th-parchemin .hz-day.sel { outline-color: #8e1b1b; } .horlogia-app.hz-th-steampunk .hz-day.sel { outline-color: #ffb23d; }
+.horlogia-app .hz-grid { user-select: none; }
+.horlogia-app .hz-grid .hz-evc { position: relative; z-index: 1; }
+.horlogia-app .hz-grid .hz-evc.band { border-radius: 0; margin-left: -11px; margin-right: -11px; padding-left: 12px; border-left: 0; color: #fff; background: color-mix(in srgb, var(--ec) 62%, #0a0e22); box-shadow: inset 0 1px 0 #ffffff33; }
+.horlogia-app .hz-grid .hz-evc.band.s { margin-left: 0; padding-left: 6px; border-radius: 5px 0 0 5px; border-left: 3px solid var(--ec); }
+.horlogia-app .hz-grid .hz-evc.band.e { margin-right: 0; border-radius: 0 5px 5px 0; } .horlogia-app .hz-grid .hz-evc.band.s.e { border-radius: 5px; }
+.horlogia-app .hz-grid .hz-evc.band.nl span { visibility: hidden; } .horlogia-app .hz-grid .hz-evc.band i { color: #fff; }
+.horlogia-app.hz-th-parchemin .hz-grid .hz-evc.band { color: #fff8e6; background: color-mix(in srgb, var(--ec) 70%, #4a2a10); box-shadow: none; } .horlogia-app.hz-th-parchemin .hz-grid .hz-evc.band.s { border-left: 0; }
+.horlogia-app.hz-th-steampunk .hz-grid .hz-evc.band { color: #1a120c; background: color-mix(in srgb, var(--ec) 55%, #f3e6c8); } .horlogia-app.hz-th-steampunk .hz-grid .hz-evc.band i { color: #1a120c; }
+.hz-selbar { display: flex; flex-direction: column; gap: 6px; padding: 9px; border-radius: 10px; border: 1px dashed #ffd36b; background: #ffd36b14; } .hz-selbar b { color: #ffd36b; } .hz-selbar small { color: var(--hz-dim); } .hz-selbar span { display: flex; gap: 6px; }
+.horlogia-app.hz-th-parchemin .hz-selbar { border-color: #8e1b1b; background: #8e1b1b10; border-radius: 3px; } .horlogia-app.hz-th-parchemin .hz-selbar b { color: #8e1b1b; font-family: "IM Fell English SC", serif; }
+.horlogia-app.hz-th-steampunk .hz-selbar { border-color: #e9c77a; background: #e9c77a12; } .horlogia-app.hz-th-steampunk .hz-selbar b { color: #e9c77a; font-family: "Special Elite", monospace; }
+/* couleur libre dans la fenêtre d'événement */
+.hz-sw2 label.free { align-items: center; } .hz-sw2 label.free input[type=radio] { position: absolute; opacity: 0; } .hz-sw2 label.free input[type=color] { width: 30px !important; height: 26px !important; padding: 0; border-radius: 50% !important; }
+.hz-evf > label:first-child input { height: 38px !important; font-size: 17px !important; }
+/* joueurs d'un groupe */
+.hz-chip.pl em { font-style: normal; font-size: 11px; opacity: .75; margin-left: 2px; }
+/* 1.2.0 — bannières plus présentes, date lisible sur parchemin */
+#horlogia-hud .hz-banner .b2 { opacity: .85; -webkit-mask-image: linear-gradient(90deg, #000 0, #000 26%, transparent 44%, transparent 58%, #000 76%, #000 100%); mask-image: linear-gradient(90deg, #000 0, #000 26%, transparent 44%, transparent 58%, #000 76%, #000 100%); }
+#horlogia-hud.hz-se-spring .hz-banner .b1 { background: radial-gradient(60% 170% at 0 100%, #7fdc8a66, transparent 62%), radial-gradient(55% 170% at 100% 0, #ffb7c566, transparent 62%); }
+#horlogia-hud.hz-se-summer .hz-banner .b1 { background: radial-gradient(34% 240% at 0 50%, #ffd23a8a, transparent 72%), repeating-conic-gradient(from 0deg at 0 50%, #ffd23a3d 0 3deg, transparent 3deg 10deg), radial-gradient(45% 170% at 100% 100%, #ff9a3d55, transparent 70%), radial-gradient(30% 200% at 100% 0, #fff3b033, transparent 70%); }
+#horlogia-hud.hz-se-autumn .hz-banner .b1 { background: radial-gradient(60% 170% at 0 100%, #ff8a3d66, transparent 62%), radial-gradient(55% 170% at 100% 0, #c0402055, transparent 62%); }
+#horlogia-hud.hz-se-winter .hz-banner .b1 { background: linear-gradient(180deg, #e6f6ff55, transparent 60%), radial-gradient(55% 170% at 100% 100%, #9fd8ff55, transparent 62%), radial-gradient(45% 170% at 0 0, #ffffff40, transparent 62%); }
+#horlogia-hud.hz-se-winter .hz-banner .b2 { opacity: .9; }
+#horlogia-hud.hz-th-parchemin .hz-banner .b2 { opacity: .8; filter: sepia(.25) saturate(1.2); }
+#horlogia-hud.hz-th-parchemin.hz-se-winter .hz-banner .b2 { filter: brightness(.35) sepia(.5) hue-rotate(170deg); opacity: .55; }
+#horlogia-hud.hz-th-steampunk .hz-banner .b2 { opacity: .75; filter: sepia(.15); }
+#horlogia-hud.hz-th-parchemin .hz-date b.hz-dtxt { font: 700 16px "Cinzel", serif; letter-spacing: .02em; }
+/* 1.2.1 — cases à cocher alignées dans les dialogues, barre de sélection qui ne déborde pas */
+.hz-form label.hz-sw { flex-direction: row !important; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font-size: 13px; }
+.hz-form .hz-row { align-items: flex-end; }
+.hz-selbar span { flex-wrap: wrap; } .hz-selbar .hz-btn { white-space: normal; height: auto; min-height: 32px; padding-top: 4px; padding-bottom: 4px; line-height: 1.15; } .hz-selbar .hz-btn:first-child { flex: 1; }
+#horlogia-combat.hz-th-parchemin .hzc-ctl a, #horlogia-pop.hz-th-parchemin :is(input[type=number], .hzp-temp a, .hzp-row.q a) { font-family: "Cinzel", serif; font-weight: 700; }
+#horlogia-combat.hz-th-parchemin .hzc-ctl a { font-size: 12px; }
+.hz-tag.gm { color: #ffc63d; border-color: #ffc63d80; }
+/* 1.3.1 — bouton radio « Référence » : un seul rond dessiné par nous (celui de Foundry se dédoublait et chevauchait le texte) */
+:is(.horlogia-app, .hz-dialog) .hz-sw input[type=radio] { appearance: none; -webkit-appearance: none; flex: none; position: relative; width: 16px !important; height: 16px !important; margin: 0; border-radius: 50%; border: 2px solid #8ea0c8; background: #0b1230; cursor: pointer; }
+:is(.horlogia-app, .hz-dialog) .hz-sw input[type=radio]:checked { border-color: #ffc63d; background: radial-gradient(circle, #ffc63d 0 4px, #0b1230 5px); box-shadow: 0 0 8px -2px #ffc63d; }
+:is(.horlogia-app, .hz-dialog) .hz-sw input[type=radio]::before, :is(.horlogia-app, .hz-dialog) .hz-sw input[type=radio]::after { content: none !important; display: none !important; }
+:is(.horlogia-app, .hz-dialog) .hz-row { flex-wrap: wrap; row-gap: 6px; }
+:is(.horlogia-app, .hz-dialog) .hz-sw input[type=radio] { background: #1a1208 !important; border-color: #b8863b !important; }
+:is(.horlogia-app, .hz-dialog) .hz-sw input[type=radio]:checked { background: radial-gradient(circle, #ffc63d 0 4px, #1a1208 5px) !important; border-color: #ffc63d !important; }
+
+/* ═══════════════════════ 1.4 — mise en page : onglets des groupes, bulles, épée de combat ═══════════════════════ */
+.hz-gtabs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 0 10px; margin-bottom: 10px; border-bottom: 1px solid var(--hz-ln); }
+.hz-gtabs > a { --gc: #5ee0ff; display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px; border-radius: 10px 10px 4px 4px; cursor: pointer; font: 800 14px "Rajdhani", sans-serif; letter-spacing: .04em; color: #b9c6e6;
+  background: color-mix(in srgb, var(--gc) 8%, #0b1230); border: 1px solid color-mix(in srgb, var(--gc) 40%, transparent); border-bottom-width: 3px; }
+.hz-gtabs > a .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gc); box-shadow: 0 0 6px var(--gc); } .hz-gtabs > a i:not(.dot) { color: var(--gc); font-size: 12px; }
+.hz-gtabs > a.on { color: #fff; background: linear-gradient(180deg, color-mix(in srgb, var(--gc) 40%, #0b1230), color-mix(in srgb, var(--gc) 14%, #0b1230)); border-color: var(--gc); box-shadow: 0 0 16px -5px var(--gc); }
+.hz-gtabs > select { height: 34px; min-width: 160px; }
+.hz-gpanel { --gc: #5ee0ff; display: flex; flex-direction: column; gap: 10px; }
+.hz-gph { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: linear-gradient(90deg, color-mix(in srgb, var(--gc) 22%, #0b1230), #0b1230 70%); border: 1px solid color-mix(in srgb, var(--gc) 50%, transparent); }
+.hz-gph input[type=color] { width: 36px; height: 34px; padding: 1px; } .hz-gph .hz-gn { flex: 0 1 300px; height: 36px; font: 800 20px "Rajdhani", sans-serif !important; }
+.hz-gph .hz-gnow { margin-left: auto; display: flex; align-items: baseline; gap: 10px; } .hz-gph .hz-gnow b { font: 700 15px "Rajdhani", sans-serif; color: #fff; } .hz-gph .hz-gnow span { font: 700 18px "Orbitron", monospace; color: var(--gc); }
+.hz-ggrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 10px; }
+.hz-gsec { --sc: #5ee0ff; display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border-radius: 12px; background: linear-gradient(180deg, color-mix(in srgb, var(--sc) 9%, #0b1230), #070a18); border: 1px solid color-mix(in srgb, var(--sc) 35%, transparent); border-top: 3px solid var(--sc); }
+.hz-gsec.wide { grid-column: 1 / -1; } .hz-gsec > h4 { margin: 0; border: 0; font: 800 14px "Rajdhani", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #fff; } .hz-gsec > h4 i { color: var(--sc); }
+.hz-chipse { --sc: #c0c8e0; display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 12px; font-weight: 700; color: #fff; border: 1px solid var(--sc); background: color-mix(in srgb, var(--sc) 18%, transparent); } .hz-chipse i { color: var(--sc); }
+.hz-thr { display: flex; flex-wrap: wrap; }
+/* les paramètres restent lisibles : quel que soit le thème, les onglets Groupes / Calendriers / Réglages gardent ce style */
+.horlogia-app.hz-neutral .hz-sw { color: #dfe6ff; }
+/* bulles : liste de choix (groupe, saison) et passage du temps */
+#horlogia-pop h5 { margin: 10px 0 6px; font: 700 12px var(--phead); letter-spacing: .1em; text-transform: uppercase; color: var(--pacc); }
+#horlogia-pop .hzp-row.q.adv a { min-width: 58px; }
+#horlogia-pop .hzp-list { display: flex; flex-direction: column; gap: 4px; min-width: 300px; }
+#horlogia-pop .hzp-list a { --xc: var(--pacc); display: grid; grid-template-columns: 18px 1fr; column-gap: 8px; align-items: center; padding: 7px 10px; border-radius: 8px; color: var(--ptx); background: color-mix(in srgb, var(--xc) 8%, transparent); border: 1px solid color-mix(in srgb, var(--xc) 35%, transparent); }
+#horlogia-pop .hzp-list a > :first-child { grid-row: span 2; color: var(--xc); text-align: center; } #horlogia-pop .hzp-list a .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--xc); box-shadow: 0 0 6px var(--xc); justify-self: center; }
+#horlogia-pop .hzp-list a b { font: 700 14px var(--pfont); } #horlogia-pop .hzp-list a small { font: 600 11px var(--pfont); color: var(--pdim); }
+#horlogia-pop .hzp-list a:hover { border-color: var(--xc); } #horlogia-pop .hzp-list a.on { border: 2px solid var(--xc); background: color-mix(in srgb, var(--xc) 22%, transparent); }
+#horlogia-hud .hz-season { cursor: pointer; } #horlogia-hud .hz-season:hover { filter: brightness(1.2); }
+/* épée rouge du mode combat */
+.hz-sword { width: 20px; height: 20px; display: block; filter: drop-shadow(0 0 4px #ff3d5a); transition: transform .2s, filter .2s; }
+.hz-sword .bl { filter: drop-shadow(0 0 2px #ff7a8a); }
+#horlogia-hud .hz-ctl a.cb { background: radial-gradient(circle at 50% 35%, #4a0a14, #14030a 75%) !important; border: 1px solid #ff3d5a !important; box-shadow: 0 2px 0 #3a0610, 0 0 10px -2px #ff3d5a, inset 0 0 8px #ff3d5a44 !important; border-radius: 9px !important; }
+#horlogia-hud .hz-ctl a.cb:hover .hz-sword { transform: rotate(-12deg) scale(1.15); filter: drop-shadow(0 0 8px #ff3d5a); }
+#horlogia-hud .hz-ctl a.cb.on { background: radial-gradient(circle at 50% 35%, #ff3d5a, #7a0a1c 75%) !important; animation: hzCb 1.4s ease-in-out infinite; } @keyframes hzCb { 50% { box-shadow: 0 2px 0 #3a0610, 0 0 20px 2px #ff3d5a; } }
+#horlogia-hud .hz-ctl a.cb.on .hz-sword { filter: drop-shadow(0 0 6px #fff); }
+.hz-btn.hz-cbt { display: inline-flex; align-items: center; gap: 6px; } .hz-btn.hz-cbt .hz-sword { width: 18px; height: 18px; } .hz-tag .hz-sword { width: 14px; height: 14px; display: inline-block; vertical-align: -2px; }
+#horlogia-combat .hzc-top .hz-sword { width: 22px; height: 22px; }
+
+/* ═══════════════════════ 1.4 — NOUVEAUX THÈMES ═══════════════════════ */
+/* ── Spatial profond : nébuleuse ── */
+#horlogia-hud.hz-th-spatial-deep { background: radial-gradient(1px 1px at 40px 10px, #fff, transparent), radial-gradient(1.5px 1.5px at 200px 30px, #fff, transparent), radial-gradient(1px 1px at 330px 14px, #fffc, transparent), radial-gradient(70% 160% at 10% 50%, #b04aff55, transparent 65%), radial-gradient(60% 160% at 80% 40%, #ff4f9a44, transparent 65%), radial-gradient(50% 140% at 50% 120%, #2fd8ff33, transparent 70%), linear-gradient(180deg, #120626f5, #05020ef5); border-color: #b04aff99; box-shadow: 0 0 26px -6px #b04aff, 0 8px 22px #000c, inset 0 1px 0 #ffffff22; }
+#horlogia-hud.hz-th-spatial-deep .hz-time { background: #0a0418cc; border-color: #ff4f9a88; } #horlogia-hud.hz-th-spatial-deep .hz-time b { color: #ffe9fb; text-shadow: 0 0 8px #ff4f9a, 0 0 18px #b04aff; }
+#horlogia-hud.hz-th-spatial-deep .hz-grp { background: color-mix(in srgb, #b04aff 30%, #0a0418); border-color: #b04aff; }
+:is(.horlogia-app, .hz-dialog).hz-th-spatial-deep .window-content { background: radial-gradient(1.5px 1.5px at 60px 80px, #fff, transparent), radial-gradient(1px 1px at 300px 200px, #fffa, transparent), radial-gradient(70% 60% at 85% 10%, #b04aff40, transparent 70%), radial-gradient(60% 60% at 10% 90%, #ff4f9a30, transparent 70%), linear-gradient(180deg, #12062a, #04010c) !important; background-size: 520px 300px, 520px 300px, 100% 100%, 100% 100%, 100% 100% !important; }
+#horlogia-pop.hz-th-spatial-deep { --pb: radial-gradient(80% 120% at 0 0, #b04aff40, transparent 60%), linear-gradient(180deg, #160830, #07020f); --pbd: #b04aff; --pacc: #ff8ad0; }
+#horlogia-combat.hz-th-spatial-deep { background: radial-gradient(90% 70% at 50% 0, #b04aff55, transparent 70%), linear-gradient(180deg, #160830f2, #05020ef2); border-color: #ff4f9a; }
+.hz-tht.hz-th-spatial-deep .hz-thp { background: radial-gradient(1px 1px at 20px 10px, #fff, transparent), radial-gradient(70% 140% at 20% 50%, #b04aff77, transparent 70%), radial-gradient(60% 140% at 90% 50%, #ff4f9a55, transparent 70%), linear-gradient(180deg, #160830, #05020e); border: 1px solid #b04aff; }
+.hz-tht.hz-th-spatial-deep .hz-thp b { color: #ffe9fb; text-shadow: 0 0 8px #ff4f9a; }
+
+/* ── Verre optique : verre dépoli, reflets ── */
+#horlogia-hud.hz-th-verre { background: linear-gradient(135deg, #ffffff30, #ffffff0c 45%, #ffffff18) !important; backdrop-filter: blur(16px) saturate(1.7); -webkit-backdrop-filter: blur(16px) saturate(1.7); border: 1px solid #ffffff70; box-shadow: inset 0 1px 0 #ffffffb0, inset 0 -1px 0 #ffffff30, 0 10px 30px -10px #000a; color: #fff; }
+#horlogia-hud.hz-th-verre .hz-banner { opacity: .35; }
+#horlogia-hud.hz-th-verre :is(.hz-grp, .hz-time, .hz-season, .hz-ctl a) { background: linear-gradient(180deg, #ffffff2e, #ffffff0a) !important; border: 1px solid #ffffff60 !important; box-shadow: inset 0 1px 0 #ffffff90, 0 2px 8px -4px #000 !important; color: #fff; }
+#horlogia-hud.hz-th-verre .hz-time b { font: 300 21px "Rajdhani", sans-serif; letter-spacing: .08em; color: #fff; text-shadow: 0 1px 2px #0006, 0 0 10px #bfe9ff; }
+#horlogia-hud.hz-th-verre .hz-date b, #horlogia-hud.hz-th-verre .hz-wx { color: #fff; text-shadow: 0 1px 3px #0008; }
+:is(.horlogia-app, .hz-dialog).hz-th-verre .window-content { background: linear-gradient(135deg, #2a3a5acc, #101828e6) !important; backdrop-filter: blur(10px); }
+:is(.horlogia-app, .hz-dialog).hz-th-verre :is(.hz-day, .hz-side, .hz-mini) { background: linear-gradient(135deg, #ffffff1c, #ffffff06) !important; border: 1px solid #ffffff40 !important; box-shadow: inset 0 1px 0 #ffffff60; border-radius: 10px; }
+:is(.horlogia-app, .hz-dialog).hz-th-verre .hz-day.today { border: 2px solid #bfe9ff !important; box-shadow: inset 0 1px 0 #fff, 0 0 16px -4px #bfe9ff; }
+#horlogia-pop.hz-th-verre { --pb: linear-gradient(135deg, #3a4a6ad9, #141c30e6); --pbd: #ffffff80; --pacc: #bfe9ff; backdrop-filter: blur(16px) saturate(1.6); }
+#horlogia-combat.hz-th-verre { background: linear-gradient(135deg, #ffffff2a, #ffffff0a) !important; backdrop-filter: blur(16px) saturate(1.7); border: 1px solid #ffffff80; box-shadow: inset 0 1px 0 #fff, 0 14px 34px #000a; }
+#horlogia-combat.hz-th-verre .hzc-time b { font-weight: 300; text-shadow: 0 0 12px #bfe9ff, 0 2px 4px #0008; }
+.hz-tht.hz-th-verre .hz-thp { border-radius: 12px; background: linear-gradient(135deg, #ffffff40, #ffffff10 45%, #ffffff28), linear-gradient(135deg, #4a6a9a, #1a2440); border: 1px solid #ffffff90; box-shadow: inset 0 1px 0 #fff; }
+.hz-tht.hz-th-verre .hz-thp b { font: 300 18px "Rajdhani", sans-serif; color: #fff; text-shadow: 0 0 8px #bfe9ff; }
+
+/* ── Cyberpunk : néon rose et cyan, coins coupés ── */
+#horlogia-hud.hz-th-cyberpunk { background: repeating-linear-gradient(0deg, #ff2bd60c 0 1px, transparent 1px 4px), linear-gradient(90deg, #0a0010f5, #10001ef5 60%, #00141cf5) !important; border: 1px solid #ff2bd6; border-radius: 0; clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); box-shadow: 0 0 22px -4px #ff2bd6, inset 0 0 0 1px #00f0ff44; }
+#horlogia-hud.hz-th-cyberpunk .hz-time { background: #000; border: 1px solid #00f0ff; border-radius: 0; box-shadow: 0 0 10px -2px #00f0ff, inset 0 0 8px #00f0ff44; }
+#horlogia-hud.hz-th-cyberpunk .hz-time b { font: 700 19px "Orbitron", monospace; color: #fff; text-shadow: 1.5px 0 #ff2bd6, -1.5px 0 #00f0ff, 0 0 10px #ff2bd6; }
+#horlogia-hud.hz-th-cyberpunk .hz-grp { background: #ff2bd6; color: #12001a; border: 0; border-radius: 0; font-family: "Orbitron", sans-serif; letter-spacing: .14em; clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); }
+#horlogia-hud.hz-th-cyberpunk .hz-grp i { color: #12001a; }
+#horlogia-hud.hz-th-cyberpunk .hz-date b { font-family: "Orbitron", sans-serif; font-size: 13px; letter-spacing: .1em; color: #00f0ff; text-shadow: 0 0 8px #00f0ff; }
+#horlogia-hud.hz-th-cyberpunk .hz-ctl a:not(.cb) { border-radius: 0; background: #000; border: 1px solid #00f0ff; color: #00f0ff; box-shadow: 0 0 8px -2px #00f0ff; }
+:is(.horlogia-app, .hz-dialog).hz-th-cyberpunk .window-content { background: linear-gradient(#ff2bd610 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(90deg, #00f0ff10 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(180deg, #0c0016, #000) !important; }
+:is(.horlogia-app, .hz-dialog).hz-th-cyberpunk .hz-day { border-radius: 0; background: #0a0010cc; border: 1px solid #ff2bd655; } :is(.horlogia-app, .hz-dialog).hz-th-cyberpunk .hz-day.today { border: 1px solid #00f0ff; box-shadow: 0 0 14px -3px #00f0ff, inset 0 0 10px #00f0ff33; }
+:is(.horlogia-app, .hz-dialog).hz-th-cyberpunk .hz-calh h2 { font-family: "Orbitron", sans-serif; letter-spacing: .14em; text-shadow: 2px 0 #ff2bd6, -2px 0 #00f0ff; }
+#horlogia-pop.hz-th-cyberpunk { --pb: linear-gradient(180deg, #10001e, #000); --pbd: #ff2bd6; --pacc: #00f0ff; --pfont: "Rajdhani", sans-serif; border-radius: 0 !important; }
+#horlogia-combat.hz-th-cyberpunk { background: repeating-linear-gradient(0deg, #ff2bd610 0 1px, transparent 1px 4px), linear-gradient(180deg, #10001ef2, #000f); border: 1px solid #ff2bd6; border-radius: 0; clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+#horlogia-combat.hz-th-cyberpunk .hzc-time b { text-shadow: 3px 0 #ff2bd6, -3px 0 #00f0ff, 0 0 20px #ff2bd6; }
+.hz-tht.hz-th-cyberpunk .hz-thp { border-radius: 0; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); background: repeating-linear-gradient(0deg, #ff2bd618 0 1px, transparent 1px 4px), linear-gradient(90deg, #12001e, #001820); border: 1px solid #ff2bd6; }
+.hz-tht.hz-th-cyberpunk .hz-thp b { font: 700 16px "Orbitron", monospace; color: #fff; text-shadow: 1.5px 0 #ff2bd6, -1.5px 0 #00f0ff; } .hz-tht.hz-th-cyberpunk .hz-thp i { color: #00f0ff; }
+
+/* ── Fantasy sombre : cuir noirci, encre d'or ── */
+:root { --hz-parchD: var(--hz-noise), radial-gradient(ellipse at 18% 12%, #5a4026aa 0, transparent 45%), radial-gradient(ellipse at 50% 50%, transparent 50%, #000a 100%), linear-gradient(180deg, #2c2116, #15100a); }
+:is(#horlogia-hud, #horlogia-combat, .horlogia-app, .hz-dialog).hz-th-parchemin.hz-th-parchemin-dark { --hz-tx: #f1e2bd; --hz-dim: #c9a46a; --hz-ln: #c9a46a55; --hz-moonbg: #1a120a; }
+#horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark, #horlogia-combat.hz-th-parchemin.hz-th-parchemin-dark { background: var(--hz-parchD) !important; color: #f1e2bd; border-color: #c9a46a; box-shadow: 0 6px 18px #000c, inset 0 0 18px #000a; }
+#horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark :is(.hz-date b, .hz-time b, .hz-wx, .hz-date small) { color: #f1e2bd !important; text-shadow: 0 1px 0 #000; }
+#horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark .hz-time { background: #0e0a06cc; border-color: #c9a46a; } #horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark .hz-time b { color: #ffd98a !important; text-shadow: 0 0 8px #d9a24a88 !important; }
+#horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark .hz-grp { background: linear-gradient(180deg, #d9b25a, #8a6420); color: #1a1006; } #horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark .hz-grp i { color: #1a1006; }
+#horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark .hz-season { background: #1a120acc; color: #f1e2bd; }
+#horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark .hz-ctl a:not(.cb) { background: linear-gradient(180deg, #3a2a1a, #1a120a); color: #f1e2bd; border-color: #c9a46a; }
+#horlogia-combat.hz-th-parchemin.hz-th-parchemin-dark :is(.hzc-time b, .hzc-top) { color: #ffd98a !important; }
+#horlogia-pop.hz-th-parchemin.hz-th-parchemin-dark { --pb: var(--hz-parchD); --pbd: #c9a46a; --ptx: #f1e2bd; --pdim: #c9a46a; --pacc: #ffd98a; --pin: #1a120a; --pinbd: #c9a46a; --pintx: #f1e2bd; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin.hz-th-parchemin-dark, :is(.horlogia-app, .hz-dialog).hz-th-parchemin.hz-th-parchemin-dark .window-content { background: var(--hz-parchD) !important; color: #f1e2bd; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin.hz-th-parchemin-dark :is(p, b, h2, .hz-day > b, .hz-wd, .hz-now, .hz-md, .hz-sw, label, .hz-calh h2) { color: #f1e2bd !important; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin.hz-th-parchemin-dark :is(.hz-day, .hz-side, .hz-mini, .hz-evl) { background: #0e0a0699 !important; border-color: #c9a46a66 !important; box-shadow: inset 0 0 0 1px #000 !important; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin.hz-th-parchemin-dark .hz-day.today { border: 2px solid #ffd98a !important; box-shadow: inset 0 0 16px -6px #ffd98a !important; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin.hz-th-parchemin-dark :is(input, select, textarea) { background: #1a120a !important; color: #f1e2bd !important; border-color: #c9a46a !important; }
+:is(.horlogia-app, .hz-dialog).hz-th-parchemin.hz-th-parchemin-dark :is(.hz-tabs > a:not(.hz-btn), .hz-btn) { background: linear-gradient(180deg, #3a2a1a, #1a120a) !important; color: #f1e2bd !important; border-color: #c9a46a !important; }
+.hz-tht.hz-th-parchemin.hz-th-parchemin-dark .hz-thp { background: var(--hz-parchD); border-color: #c9a46a; } .hz-tht.hz-th-parchemin.hz-th-parchemin-dark .hz-thp b { color: #ffd98a; text-shadow: 0 0 6px #d9a24a88; } .hz-tht.hz-th-parchemin.hz-th-parchemin-dark .hz-thp i { color: #d9b25a; }
+
+/* ── Steampunk sombre : fonte noire, laiton patiné, heure en TUBES NIXIE (chiffres orange incandescents dans des ampoules de verre) ── */
+:root { --hz-iron: radial-gradient(ellipse at 50% 0, #3a2a1a55, transparent 60%), var(--hz-noise), linear-gradient(180deg, #16120e, #070504); }
+:is(#horlogia-hud, #horlogia-combat, .horlogia-app, .hz-dialog).hz-th-steampunk.hz-th-steampunk-dark { --hz-tx: #e9d3a0; --hz-dim: #9a7a48; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark { background: var(--hz-gear) right -10px center / 74px no-repeat, var(--hz-iron); border-color: #6a4a22; box-shadow: inset 0 0 0 1px #000, inset 0 0 0 3px #8a6a3a33, 0 6px 18px #000c; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark .hz-grp { background: linear-gradient(180deg, #8a6a3a, #3a2410); color: #f3dca0; border-color: #1a0e04; text-shadow: 0 1px 0 #000; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark .hz-time { background: linear-gradient(180deg, #0c0806, #000); border: 1px solid #5a3a14; border-radius: 6px; padding: 0 6px; height: 36px; box-shadow: inset 0 2px 8px #000, 0 0 0 2px #2a1a0c, 0 0 0 3px #6a4a2288; }
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk.hz-th-steampunk-dark :is(.hz-time, .hzc-time) b em, .hz-tht.hz-th-steampunk-dark .hz-thp b em {
+  display: inline-block; width: .82em; margin: 0 1.5px; padding: 1px 0; text-align: center; font: 300 1em "Share Tech Mono", "Courier Prime", monospace; font-style: normal;
+  color: #ffb347; text-shadow: 0 0 2px #fff4d0, 0 0 6px #ff8a1e, 0 0 12px #ff6a00, 0 0 20px #ff4a00aa;
+  background: radial-gradient(ellipse 60% 42% at 50% 30%, #ffffff1a, transparent 70%), radial-gradient(ellipse at 50% 55%, #3a1a0844, #0a0604 75%);
+  border-radius: 45% 45% 18% 18% / 30% 30% 10% 10%; box-shadow: inset 0 0 0 1px #ffffff1c, inset 0 -3px 4px #000, inset 0 2px 2px #ffffff22, 0 0 0 1px #2a1a0c, 0 2px 0 #3a2410; }
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk.hz-th-steampunk-dark :is(.hz-time, .hzc-time) b u, .hz-tht.hz-th-steampunk-dark .hz-thp b u { color: #ff9a2e; text-shadow: 0 0 6px #ff6a00, 0 0 12px #ff4a00; padding: 0 1px; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark .hz-time b { font-size: 19px; color: #ffb347; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark.play .hz-dot { background: #ff8a1e; box-shadow: 0 0 8px #ff6a00; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark .hz-ctl a:not(.cb) { background: radial-gradient(circle at 50% 40%, #241a12, #050302 70%); border-color: #8a6a3a; }
+#horlogia-combat.hz-th-steampunk.hz-th-steampunk-dark { background: var(--hz-gear) center / 230px no-repeat, var(--hz-iron); border-color: #6a4a22; }
+#horlogia-combat.hz-th-steampunk.hz-th-steampunk-dark .hzc-time b { color: #ffb347; font-size: 50px; }
+#horlogia-combat.hz-th-steampunk.hz-th-steampunk-dark .hzc-face { fill: #1a120a; stroke: #6a4a22; } #horlogia-combat.hz-th-steampunk.hz-th-steampunk-dark .hzc-tk { stroke: #ffb347; } #horlogia-combat.hz-th-steampunk.hz-th-steampunk-dark .hzc-needle { stroke: #ff6a00; filter: drop-shadow(0 0 3px #ff6a00); }
+#horlogia-pop.hz-th-steampunk.hz-th-steampunk-dark { --pb: var(--hz-iron); --pbd: #6a4a22; --pacc: #ffb347; --pin: #0c0806; --pinbd: #6a4a22; --pintx: #ffd9a0; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk.hz-th-steampunk-dark .window-content { background: var(--hz-gear) right -60px bottom -60px / 260px no-repeat, var(--hz-iron) !important; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk.hz-th-steampunk-dark .hz-day { background: radial-gradient(circle at 50% 30%, #1e160e, #050302 75%); border-color: #4a3418; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk.hz-th-steampunk-dark .hz-day.today { border-color: #ff8a1e; box-shadow: 0 3px 0 #000, 0 0 14px -2px #ff6a00, inset 0 0 0 2px #050302; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk.hz-th-steampunk-dark .hz-day > b { color: #ffb347; text-shadow: 0 0 6px #ff6a00; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk.hz-th-steampunk-dark :is(input, select, textarea) { background: #0c0806 !important; color: #ffd9a0 !important; border-color: #6a4a22 !important; }
+.hz-tht.hz-th-steampunk.hz-th-steampunk-dark .hz-thp { background: var(--hz-gear) right -8px center / 46px no-repeat, var(--hz-iron); border-color: #6a4a22; } .hz-tht.hz-th-steampunk-dark .hz-thp b { font-size: 15px; }
+/* 1.4 — cases cochées bien visibles (le fond des champs écrasait la coche) */
+:is(.horlogia-app, .hz-dialog) input[type=checkbox] { background-color: #0b1230 !important; border: 2px solid #6f86c9 !important; }
+:is(.horlogia-app, .hz-dialog) input[type=checkbox]:checked { background: #ffc63d url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M2 6.4l2.6 2.6L10 3.4' fill='none' stroke='%23140e02' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>") center / 12px no-repeat !important; border-color: #ffc63d !important; box-shadow: 0 0 8px -2px #ffc63d; }
+.hz-gtabs { flex-wrap: wrap; } .hz-gtabs > .hz-sp { flex: 1 1 0; min-width: 0; } .hz-gtabs > select { width: auto !important; flex: 0 0 auto; max-width: 220px; } .hz-gtabs > .hz-btn { flex: none; }
+
+/* ================= 1.5 ================= */
+/* --- pastilles de couleur (groupes, événements) : clic = choisir, clic droit = nuances --- */
+.hz-gcol { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 8px 2px 2px; } .hz-gcol > span { font: 700 12.5px "Rajdhani", sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #c9d4f5; }
+.hz-gph .hz-gdot { width: 16px; height: 16px; border-radius: 50%; background: var(--gc); box-shadow: 0 0 0 2px #fff3, 0 0 12px var(--gc); flex: none; }
+.hz-swr { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.hz-swr .hz-swc { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; background: var(--c); border: 2px solid #0009; box-shadow: 0 0 0 1px #ffffff30, 0 0 8px -3px var(--c); transition: transform .1s; }
+.hz-swr .hz-swc:hover { transform: scale(1.15); } .hz-swr .hz-swc.on { box-shadow: 0 0 0 2px #fff, 0 0 12px var(--c); transform: scale(1.1); }
+.hz-swr .hz-swf { position: relative; display: inline-grid !important; place-items: center; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; color: #fff; background: conic-gradient(#ff3b4e, #ffc63d, #5aff9a, #38e0ff, #8a6bff, #ff6be0, #ff3b4e); box-shadow: 0 0 0 1px #ffffff40; }
+.hz-swr .hz-swf i { font-size: 11px; text-shadow: 0 0 3px #000, 0 0 2px #000; pointer-events: none; }
+.hz-swr .hz-swf input { position: absolute; inset: 0; opacity: 0; width: 100% !important; height: 100% !important; cursor: pointer; padding: 0 !important; border: 0 !important; }
+.hz-shades { position: absolute; z-index: 60; display: flex; flex-direction: column; gap: 4px; padding: 6px; border-radius: 16px; background: #070b18f5; border: 1px solid #ffffff2a; box-shadow: 0 10px 30px -6px #000, 0 0 16px -8px #5ef0ff; }
+.hz-shades .hz-swc { width: 18px !important; height: 18px !important; border: 0 !important; box-shadow: 0 0 0 1px #ffffff40 !important; } .hz-shades .hz-swc:hover { transform: scale(1.2); box-shadow: 0 0 0 2px #fff, 0 0 10px var(--c) !important; }
+
+/* --- combat : boutons Pause / Play explicites --- */
+#horlogia-combat .hzc-ctl a.big { min-width: 92px; justify-content: center; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; }
+
+/* --- Steampunk (clair et sombre) : date et jour en gras, police nette --- */
+#horlogia-hud.hz-th-steampunk .hz-date b.hz-wday { font: 900 13.5px "Cinzel", serif; letter-spacing: .1em; text-transform: uppercase; }
+#horlogia-hud.hz-th-steampunk .hz-date b.hz-dtxt { font: 700 17px "Cinzel", serif; letter-spacing: .02em; color: #fff0cf; text-shadow: 0 1px 0 #000, 0 0 6px #0008; }
+#horlogia-hud.hz-th-steampunk .hz-grp, #horlogia-hud.hz-th-steampunk .hz-season { font: 700 13.5px "Cinzel", serif; letter-spacing: .03em; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-calh h2 { font: 900 28px "Cinzel", serif; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-wd { font: 700 13px "Cinzel", serif; letter-spacing: .08em; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-day > b { font: 700 18px "Cinzel", serif; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-tabs > a:not(.hz-btn), :is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-btn { font: 700 14px "Cinzel", serif; }
+:is(.horlogia-app, .hz-dialog).hz-th-steampunk .hz-evl b { font-family: "Cinzel", serif; font-weight: 700; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark .hz-date b.hz-dtxt { color: #ffd9a0; text-shadow: 0 1px 0 #000, 0 0 8px #ff6a0055; }
+
+/* --- Steampunk sombre : vrais tubes Nixie --- */
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk.hz-th-steampunk-dark :is(.hz-time, .hzc-time) b em, .hz-tht.hz-th-steampunk-dark .hz-thp b em {
+  position: relative; isolation: isolate; display: inline-block; width: .86em; height: 1.42em; line-height: 1.42em; margin: 0 2px; padding: 0; vertical-align: middle; overflow: hidden;
+  font: 400 1em "Share Tech Mono", "Courier Prime", monospace; font-style: normal; color: #ffc15e;
+  text-shadow: 0 0 1px #fff6dc, 0 0 4px #ff9a2e, 0 0 9px #ff6a00, 0 0 16px #ff4a00, 0 0 26px #ff3a0088;
+  background:
+    repeating-linear-gradient(60deg, transparent 0 3px, #ff8a1e10 3px 4px), repeating-linear-gradient(-60deg, transparent 0 3px, #ff8a1e10 3px 4px),
+    radial-gradient(ellipse 55% 45% at 50% 52%, #ff6a0033, transparent 75%),
+    radial-gradient(ellipse at 50% 40%, #1a0c06, #050201 80%);
+  border-radius: 48% 48% 10% 10% / 26% 26% 6% 6%;
+  border-bottom: .14em solid #8a6a3a;
+  box-shadow: inset 0 0 0 1px #fff2, inset 1px 0 0 #ffffff26, inset 0 -6px 8px -4px #000, 0 0 0 1px #1a0e04, 0 1px 0 1px #3a2410, 0 0 10px -2px #ff6a0066;
+  animation: none; }
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk.hz-th-steampunk-dark :is(.hz-time, .hzc-time) b em::before, .hz-tht.hz-th-steampunk-dark .hz-thp b em::before {
+  content: ""; position: absolute; left: 14%; top: 5%; width: 22%; height: 42%; border-radius: 50%; background: linear-gradient(180deg, #ffffff40, #ffffff00); pointer-events: none; }
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk.hz-th-steampunk-dark :is(.hz-time, .hzc-time) b em::after, .hz-tht.hz-th-steampunk-dark .hz-thp b em::after {
+  content: "8"; position: absolute; inset: 0; color: #ff8a1e12; text-shadow: none; z-index: -1; pointer-events: none; }
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk.hz-th-steampunk-dark :is(.hz-time, .hzc-time) b em:nth-child(3n+2) { animation-delay: -1.7s; }
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk.hz-th-steampunk-dark :is(.hz-time, .hzc-time) b em:nth-child(4n+1) { animation-delay: -3.1s; }
+@keyframes hzNixie { 0%, 100% { opacity: 1; } 47% { opacity: .82; } 48% { opacity: 1; } 91% { opacity: .9; } 92% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { :is(#horlogia-hud, #horlogia-combat) b em { animation: none !important; } }
+/* séparateurs : deux petites lampes néon */
+:is(#horlogia-hud, #horlogia-combat).hz-th-steampunk.hz-th-steampunk-dark :is(.hz-time, .hzc-time) b u, .hz-tht.hz-th-steampunk-dark .hz-thp b u {
+  display: inline-block; width: .32em; height: 1.2em; vertical-align: middle; color: transparent !important; text-shadow: none !important; padding: 0 !important; text-decoration: none;
+  background: radial-gradient(circle at 50% 30%, #ffd9a0 0 .07em, #ff8a1e .1em, transparent .16em), radial-gradient(circle at 50% 70%, #ffd9a0 0 .07em, #ff8a1e .1em, transparent .16em);
+  filter: drop-shadow(0 0 3px #ff6a00) drop-shadow(0 0 6px #ff4a00aa); }
+/* cadre en fer riveté */
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark .hz-time { position: relative; height: 40px; padding: 0 12px; border: 2px solid #6a4a22; border-radius: 7px;
+  background: var(--hz-rivets) 2px 2px / 7px 7px no-repeat, var(--hz-rivets) calc(100% - 2px) 2px / 7px 7px no-repeat, var(--hz-rivets) 2px calc(100% - 2px) / 7px 7px no-repeat, var(--hz-rivets) calc(100% - 2px) calc(100% - 2px) / 7px 7px no-repeat, linear-gradient(180deg, #1a120a, #050302 60%, #0c0806);
+  box-shadow: inset 0 2px 8px #000, inset 0 0 0 1px #000, 0 0 0 2px #2a1a0c, 0 0 0 3px #8a6a3a77, 0 0 16px -4px #ff6a0066; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark .hz-time b { font-size: 20px; display: inline-flex; align-items: center; }
+#horlogia-combat.hz-th-steampunk.hz-th-steampunk-dark .hzc-time b { display: flex; width: max-content; margin: 0 auto 4px; align-items: center; padding: 8px 14px; border: 3px solid #6a4a22; border-radius: 12px;
+  background: var(--hz-rivets) 4px 4px / 9px 9px no-repeat, var(--hz-rivets) calc(100% - 4px) 4px / 9px 9px no-repeat, var(--hz-rivets) 4px calc(100% - 4px) / 9px 9px no-repeat, var(--hz-rivets) calc(100% - 4px) calc(100% - 4px) / 9px 9px no-repeat, linear-gradient(180deg, #1a120a, #050302 60%, #0c0806);
+  box-shadow: inset 0 3px 12px #000, 0 0 0 2px #2a1a0c, 0 0 24px -6px #ff6a0088; }
+.hz-tht.hz-th-steampunk-dark .hz-thp b { display: inline-flex; align-items: center; }
+
+/* ================= 1.6 ================= */
+/* --- effet de saison désactivable --- */
+#horlogia-hud.hz-nofx .hz-banner { display: none !important; }
+
+/* --- même taille de barre pour tous les thèmes, et rien ne bouge quand l'heure change --- */
+#horlogia-hud { height: 46px !important; padding: 0 12px 0 8px !important; gap: 10px !important; box-sizing: border-box; }
+#horlogia-hud > * { flex: none; }
+#horlogia-hud .hz-grp { width: 120px; box-sizing: border-box; justify-content: center; overflow: hidden; } #horlogia-hud .hz-grp > span { overflow: hidden; text-overflow: ellipsis; }
+#horlogia-hud .hz-date { width: 272px; box-sizing: border-box; flex-direction: row !important; align-items: center; justify-content: center; gap: 8px; overflow: hidden; }
+#horlogia-hud .hz-date b.hz-dtxt { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#horlogia-hud .hz-time { width: 150px; height: 36px !important; box-sizing: border-box; justify-content: center; padding: 0 8px !important; }
+#horlogia-hud .hz-time b { display: inline-flex !important; align-items: center; justify-content: center; letter-spacing: 0 !important; }
+#horlogia-hud .hz-time b em { display: inline-block; width: .72em; text-align: center; font-style: normal; }
+#horlogia-hud .hz-time b u { display: inline-block; width: .36em; text-align: center; text-decoration: none; }
+#horlogia-hud.hz-th-steampunk.hz-th-steampunk-dark .hz-time b { font-size: 18px !important; }
+#horlogia-hud .hz-season { width: 104px; box-sizing: border-box; justify-content: center; overflow: hidden; }
+#horlogia-hud .hz-wx { width: 158px; box-sizing: border-box; justify-content: center; overflow: hidden; }
+#horlogia-hud .hz-ctl a { width: 30px !important; height: 30px !important; box-sizing: border-box; display: inline-grid !important; place-items: center; padding: 0 !important; }
+
+/* --- saison : la couleur de chaque saison, dans tous les thèmes --- */
+#horlogia-hud .hz-season { border-color: color-mix(in srgb, var(--sc) 75%, transparent) !important; box-shadow: inset 0 0 10px -4px var(--sc), 0 0 8px -4px var(--sc) !important; }
+#horlogia-hud .hz-season i { color: var(--sc) !important; text-shadow: 0 0 6px var(--sc) !important; filter: drop-shadow(0 0 1px #000); }
+#horlogia-hud.hz-th-parchemin:not(.hz-th-parchemin-dark) .hz-season i { color: color-mix(in srgb, var(--sc) 60%, #2b1d10) !important; text-shadow: none !important; filter: none; }
+
+/* --- météo : nom affiché + couleur propre à chaque météo --- */
+#horlogia-hud .hz-wx .hz-wxn { overflow: hidden; text-overflow: ellipsis; min-width: 0; font-size: .86em; }
+#horlogia-hud .hz-wx i { color: var(--wc) !important; text-shadow: 0 0 6px color-mix(in srgb, var(--wc) 70%, transparent) !important; filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000); }
+#horlogia-hud.hz-th-parchemin:not(.hz-th-parchemin-dark) .hz-wx i { color: color-mix(in srgb, var(--wc) 45%, #3a2410) !important; text-shadow: none !important; filter: none; }
+
+/* --- cyberpunk : jour lisible (magenta, texte sombre) --- */
+#horlogia-hud.hz-th-cyberpunk .hz-date b.hz-wday { background: #ff2bd6 !important; color: #0a0010 !important; text-shadow: none !important; box-shadow: 0 0 12px -2px #ff2bd6 !important; border-radius: 0; clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); padding: 3px 12px; }
+
+/* --- chrono de combat : boutons − / + --- */
+#horlogia-combat .hzc-adds { display: inline-flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+#horlogia-combat .hzc-adds a { padding: 0 8px !important; }
+#horlogia-combat .hzc-adds a.minus { filter: hue-rotate(-30deg) saturate(.9); opacity: .92; }
+#horlogia-combat .hzc-adds a:nth-child(4) { margin-right: 6px; }
+#horlogia-hud.hz-th-steampunk { padding: 0 11px 0 7px !important; } /* bordure de 2 px : même largeur totale que les autres thèmes */
+
+/* ══ 1.7 — kit de couleurs par thème (chrono, compteurs, pas de temps) : texte toujours lisible sur son fond ══ */
+#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop { --kp: linear-gradient(180deg, #0b1028f2, #05070ff2); --kt: #e6ecff; --kd: #8ea0c8; --ka: #5ee0ff; --kb: linear-gradient(180deg, #1a2550, #0b1230); --kbd: #3a4f8a; --ktx: #e6ecff; --ki: #121b3e; --kit: #fff; --kneg: #ffb08a; --kpos: #8ad8ff; --kf: "Rajdhani", sans-serif; }
+:is(#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop).hz-th-spatial-deep { --kp: linear-gradient(180deg, #160830f2, #07020ff2); --ka: #ff8ad0; --kbd: #b04aff99; --kb: linear-gradient(180deg, #2a1050, #12052a); --kpos: #ff8ad0; }
+:is(#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop).hz-th-verre { --kp: linear-gradient(135deg, #3a4a6ae6, #141c30f0); --ka: #bfe9ff; --kbd: #ffffff66; --kb: linear-gradient(180deg, #ffffff26, #ffffff0d); --ktx: #fff; }
+:is(#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop).hz-th-cyberpunk { --kp: linear-gradient(180deg, #10001ef2, #000000f2); --ka: #00f0ff; --kbd: #ff2bd6; --kb: linear-gradient(180deg, #2a0040, #0a0014); --kpos: #00f0ff; --kneg: #ff7ae6; }
+:is(#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop).hz-th-parchemin { --kp: var(--hz-parch); --kt: #2b1d10; --kd: #6b4a2a; --ka: #8e1b1b; --kb: linear-gradient(180deg, #fbf0d5, #e3cc98); --kbd: #6b4a2a; --ktx: #2b1d10; --ki: #fbf3dc; --kit: #2b1d10; --kneg: #8e3a10; --kpos: #1f4a7a; --kf: "Cinzel", Georgia, serif; }
+:is(#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop).hz-th-parchemin.hz-th-parchemin-dark { --kp: var(--hz-parchD); --kt: #f1e2bd; --kd: #c9a46a; --ka: #ffd98a; --kb: linear-gradient(180deg, #3a2a1a, #1a120a); --kbd: #c9a46a; --ktx: #f1e2bd; --ki: #1a120a; --kit: #f1e2bd; --kneg: #ffb08a; --kpos: #ffd98a; }
+:is(#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop).hz-th-steampunk { --kp: var(--hz-leather); --kt: #f3e3c0; --kd: #c9a35a; --ka: #e9c77a; --kb: radial-gradient(circle at 50% 40%, #3a2a1e, #120b06 75%); --kbd: #c9a35a; --ktx: #f3e3c0; --ki: #f3e6c8; --kit: #1a120c; --kneg: #ffb08a; --kpos: #ffe08a; --kf: "Courier Prime", monospace; }
+:is(#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop).hz-th-steampunk.hz-th-steampunk-dark { --kp: var(--hz-iron); --ka: #ffb347; --kbd: #8a5c2a; --ki: #0c0806; --kit: #ffd9a0; --kpos: #ffb347; }
+/* bulle : Fantasy sombre gardait les boutons beiges du parchemin clair avec un texte clair */
+#horlogia-pop.hz-th-parchemin.hz-th-parchemin-dark { --pbtn: linear-gradient(180deg, #3a2a1a, #1a120a); --pbtnbd: #c9a46a; }
+#horlogia-pop.hz-th-parchemin.hz-th-parchemin-dark .hzp-foot a.ok { background: linear-gradient(180deg, #d9b25a, #8a6420); color: #1a1006; border-color: #ffd98a; }
+
+/* ── pas de temps (bulle et fenêtre Groupes) : une ligne par unité, moins à gauche, plus à droite ── */
+#horlogia-pop .hzp-steps, .horlogia-app .hz-steps { display: flex; flex-direction: column; gap: 5px; margin: 4px 0 8px; }
+#horlogia-pop .hzp-st, .horlogia-app .hz-st { display: grid; grid-template-columns: 74px 1fr 1fr; align-items: center; gap: 8px; }
+#horlogia-pop .hzp-st > b, .horlogia-app .hz-st > b { font: 700 11.5px var(--kf); letter-spacing: .08em; text-transform: uppercase; color: var(--ka); }
+#horlogia-pop .hzp-st span, .horlogia-app .hz-st span { display: flex; gap: 4px; } #horlogia-pop .hzp-st span.m, .horlogia-app .hz-st span.m { justify-content: flex-end; }
+#horlogia-pop .hzp-st a, .horlogia-app .hz-st a { flex: 1; min-width: 38px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; cursor: pointer; text-decoration: none; background: var(--kb); border: 1px solid var(--kbd); color: var(--kpos); font: 700 13px var(--kf); text-shadow: none; box-shadow: 0 2px 0 #0005; }
+#horlogia-pop .hzp-st span.m a, .horlogia-app .hz-st span.m a { color: var(--kneg); }
+#horlogia-pop .hzp-st a:hover, .horlogia-app .hz-st a:hover { border-color: var(--ka); filter: brightness(1.15); } #horlogia-pop .hzp-st a:active, .horlogia-app .hz-st a:active { transform: translateY(1px); box-shadow: none; }
+#horlogia-pop { min-width: 520px; } #horlogia-pop .hzp-row.big input { width: 78px; }
+#horlogia-pop .hzp-foot .hzp-hint { margin: 0; align-self: center; }
+.horlogia-app .hz-steps { margin-top: 8px; }
+
+/* ── chrono de combat 1.7 ── */
+#horlogia-combat { min-width: 420px; }
+#horlogia-combat .hzc-top { position: relative; padding: 0 30px; }
+#horlogia-combat .hzc-x { position: absolute; right: -8px; top: -4px; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; cursor: pointer; background: var(--kb); border: 1px solid var(--kbd); color: var(--ktx); font-size: 14px; letter-spacing: 0; }
+#horlogia-combat .hzc-x:hover { background: #c0283c; color: #fff; border-color: #ff9aa6; }
+#horlogia-combat .hzc-time { display: flex; align-items: center; justify-content: center; gap: 12px; }
+#horlogia-combat .hzc-time b[data-c] { cursor: text; border-radius: 8px; } #horlogia-combat .hzc-time b[data-c]:hover { outline: 1px dashed currentColor; outline-offset: 4px; }
+#horlogia-combat .hzc-pm { flex: none; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; cursor: pointer; background: var(--kb); border: 1px solid var(--kbd); color: var(--ktx); font-size: 15px; box-shadow: 0 3px 0 #0006; }
+#horlogia-combat .hzc-pm:hover { border-color: var(--ka); color: var(--ka); } #horlogia-combat .hzc-pm:active { transform: translateY(2px); box-shadow: none; }
+#horlogia-combat .hzc-edit { display: inline-flex; align-items: center; gap: 6px; margin: 6px 0 2px; }
+#horlogia-combat .hzc-edit input { width: 170px; height: 62px; text-align: center; font: 900 40px var(--kf); border-radius: 8px; background: var(--ki) !important; color: var(--kit) !important; border: 2px solid var(--ka) !important; }
+#horlogia-combat .hzc-edit a { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; cursor: pointer; background: #2fd27a; color: #04140a; }
+#horlogia-combat .hzc-steps { display: flex; flex-direction: column; gap: 5px; margin: 6px 0 10px; }
+#horlogia-combat .hzc-steps span { display: flex; justify-content: center; gap: 4px; }
+#horlogia-combat .hzc-steps a { min-width: 40px; height: 27px; display: inline-flex; align-items: center; justify-content: center; padding: 0 6px; border-radius: 6px; cursor: pointer; background: var(--kb); border: 1px solid var(--kbd); color: var(--kpos); font: 700 12.5px var(--kf); box-shadow: 0 2px 0 #0006; }
+#horlogia-combat .hzc-steps a.minus { color: var(--kneg); } #horlogia-combat .hzc-steps a:hover { border-color: var(--ka); filter: brightness(1.15); } #horlogia-combat .hzc-steps a:active { transform: translateY(1px); box-shadow: none; }
+#horlogia-combat .hzc-st { color: var(--kd); }
+#horlogia-combat.hz-th-parchemin.hz-th-parchemin-dark .hzc-st, #horlogia-combat.hz-th-parchemin.hz-th-parchemin-dark .hzc-top small { color: #e9d3a0 !important; }
+#horlogia-combat.hz-th-parchemin.hz-th-parchemin-dark .hzc-ctl a:not(.big) { background: linear-gradient(180deg, #3a2a1a, #1a120a); color: #f1e2bd; border-color: #c9a46a; }
+
+/* ── compteurs ── */
+#horlogia-cnt { position: fixed; top: 64px; right: 330px; z-index: 69; width: 270px; border-radius: 12px; background: var(--kp); border: 1px solid var(--kbd); box-shadow: 0 10px 28px #000b; color: var(--kt); font-family: var(--kf); overflow: hidden; user-select: none; }
+#horlogia-cnt.hz-th-parchemin { border-radius: 4px; } #horlogia-cnt.hz-th-cyberpunk { border-radius: 0; box-shadow: 0 0 18px -4px #ff2bd6, 0 10px 28px #000b; }
+#horlogia-cnt .hzk-h { display: flex; align-items: center; gap: 6px; padding: 7px 8px 7px 10px; cursor: grab; border-bottom: 1px solid var(--kbd); background: color-mix(in srgb, var(--ka) 10%, transparent); }
+#horlogia-cnt .hzk-h > i { color: var(--ka); } #horlogia-cnt .hzk-h > span { font: 800 12.5px var(--kf); letter-spacing: .14em; text-transform: uppercase; color: var(--ka); }
+#horlogia-cnt .hzk-h small { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 11px var(--kf); color: var(--kd); }
+#horlogia-cnt .hzk-h a { width: 24px; height: 24px; display: grid; place-items: center; border-radius: 6px; cursor: pointer; color: var(--kd); font-size: 12px; border: 1px solid transparent; }
+#horlogia-cnt .hzk-h a:hover { color: var(--kt); border-color: var(--kbd); } #horlogia-cnt .hzk-h a.on { color: var(--ka); border-color: var(--ka); background: color-mix(in srgb, var(--ka) 14%, transparent); }
+#horlogia-cnt.min .hzk-b { display: none; }
+#horlogia-cnt .hzk-b { display: flex; flex-direction: column; gap: 4px; padding: 8px; }
+#horlogia-cnt .hzk-r { --kc: #5ee0ff; position: relative; display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 8px; border-radius: 8px; background: color-mix(in srgb, var(--kc) 9%, transparent); border: 1px solid color-mix(in srgb, var(--kc) 40%, transparent); }
+#horlogia-cnt .hzk-r .ic { width: 18px; text-align: center; color: var(--kc); filter: drop-shadow(0 0 4px color-mix(in srgb, var(--kc) 60%, transparent)); }
+#horlogia-cnt.hz-th-parchemin .hzk-r .ic { color: color-mix(in srgb, var(--kc) 55%, #2b1d10); filter: none; }
+#horlogia-cnt .hzk-r .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 13.5px var(--kf); color: var(--kt); }
+#horlogia-cnt .hzk-r .v { min-width: 56px; text-align: right; font: 900 19px "Orbitron", var(--kf); font-variant-numeric: tabular-nums; color: var(--kt); }
+#horlogia-cnt.hz-th-parchemin .hzk-r .v { font: 700 19px "Cinzel", serif; } #horlogia-cnt.hz-th-steampunk .hzk-r .v { font: 700 18px "Courier Prime", monospace; }
+#horlogia-cnt.can .hzk-r .v { cursor: pointer; border-radius: 5px; padding: 0 4px; } #horlogia-cnt.can .hzk-r .v:hover { background: color-mix(in srgb, var(--kc) 20%, transparent); }
+#horlogia-cnt .hzk-r .q { position: absolute; right: 6px; top: 100%; z-index: 3; display: none; gap: 3px; padding: 4px; margin-top: -4px; border-radius: 7px; background: var(--kp); border: 1px solid var(--kbd); box-shadow: 0 6px 14px #000a; }
+#horlogia-cnt.can .hzk-r:hover .q { display: flex; } #horlogia-cnt .hzk-r:hover { z-index: 4; }
+#horlogia-cnt .hzk-r .q a { min-width: 32px; height: 24px; display: grid; place-items: center; border-radius: 5px; cursor: pointer; background: var(--kb); border: 1px solid var(--kbd); color: var(--kpos); font: 700 12px var(--kf); }
+#horlogia-cnt .hzk-r .q a:first-child, #horlogia-cnt .hzk-r .q a:nth-child(2) { color: var(--kneg); } #horlogia-cnt .hzk-r .q a:nth-child(3) { color: var(--ktx); } #horlogia-cnt .hzk-r .q a:hover { border-color: var(--ka); }
+#horlogia-cnt .hzk-in { width: 110px; height: 28px; text-align: right; font: 800 16px var(--kf); background: var(--ki) !important; color: var(--kit) !important; border: 1px solid var(--ka) !important; border-radius: 5px; }
+#horlogia-cnt .hzk-r.e { height: auto; padding: 5px 6px; gap: 5px; }
+#horlogia-cnt .hzk-r.e select { width: 26px; height: 26px; padding: 0; opacity: 0; position: absolute; left: 6px; cursor: pointer; } #horlogia-cnt .hzk-r.e .ic { pointer-events: none; }
+#horlogia-cnt .hzk-r.e input:not([type=color]) { flex: 1; min-width: 0; height: 26px; padding: 0 6px; font: 700 13px var(--kf); background: var(--ki) !important; color: var(--kit) !important; border: 1px solid var(--kbd) !important; border-radius: 5px; }
+#horlogia-cnt .hzk-r.e input[type=color] { width: 26px; height: 26px; padding: 0; border: 0; background: none; cursor: pointer; }
+#horlogia-cnt .hzk-r.e a { width: 24px; height: 24px; display: grid; place-items: center; border-radius: 5px; cursor: pointer; color: var(--kd); } #horlogia-cnt .hzk-r.e a:hover { color: var(--kt); } #horlogia-cnt .hzk-r.e a.del:hover { color: #ff5d6c; }
+#horlogia-cnt .hzk-f { display: flex; gap: 6px; margin-top: 4px; } #horlogia-cnt .hzk-f a { flex: 1; height: 28px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; border-radius: 6px; cursor: pointer; background: var(--kb); border: 1px solid var(--kbd); color: var(--ktx); font: 700 12px var(--kf); } #horlogia-cnt .hzk-f a:hover { border-color: var(--ka); }
+#horlogia-cnt .hzk-0 { margin: 4px; font-style: italic; color: var(--kd); }
+#horlogia-hud .hz-ctl a.cn { font-size: 14px; }
+#horlogia-cnt .hzk-r .v { font: 800 20px "Rajdhani", var(--kf) !important; letter-spacing: .02em; }
+/* verre : une teinte sombre sous le verre pour que le texte reste lisible même sur une scène claire */
+#horlogia-combat.hz-th-verre { background: linear-gradient(135deg, #ffffff22, #ffffff08), #0e1830c4 !important; }
+#horlogia-hud.hz-th-verre { background: linear-gradient(135deg, #ffffff30, #ffffff0c 45%, #ffffff18), #0e183099 !important; }
+:is(#horlogia-combat, #horlogia-cnt, #horlogia-cntcat, .horlogia-app, #horlogia-pop).hz-th-verre { --kb: linear-gradient(180deg, #2a3a5ae6, #0e1830e6); --kd: #d6e6ff; }
+#horlogia-combat.hz-th-verre .hzc-st { text-shadow: 0 1px 2px #000; }
+
+/* ══ 1.8 ══ */
+/* fin du compte à rebours : liseré néon qui respire doucement (plus de gros flash) */
+#horlogia-combat.done { animation: hzDone2 2.6s ease-in-out infinite; }
+@keyframes hzDone2 { 0%, 100% { box-shadow: 0 0 0 1px #ff5d6c99, 0 0 8px 0 #ff3d5a55, 0 12px 30px #000a; } 50% { box-shadow: 0 0 0 1.5px #ff8a9a, 0 0 16px 2px #ff3d5a99, inset 0 0 12px -6px #ff5d6c, 0 12px 30px #000a; } }
+#horlogia-combat.done .hzc-time b { animation: none; text-shadow: 0 0 6px #ff3d5a, 0 0 14px #ff3d5a66; }
+/* saisie du chrono : mêmes chiffres que le thème, juste un trait pointillé dessous */
+#horlogia-combat .hzc-edit input { border: 0 !important; border-bottom: 2px dashed var(--ka) !important; border-radius: 6px !important; box-shadow: none !important; padding: 0 4px !important; text-align: center; outline: none; }
+
+/* météo : chaque case teintée de sa couleur, nom sur une ligne (rétréci si trop long) */
+#horlogia-pop .hzp-wx { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); width: 580px; }
+#horlogia-pop .hzp-wx a { background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 24%, transparent), color-mix(in srgb, var(--wc) 8%, transparent)) !important; border: 1px solid color-mix(in srgb, var(--wc) 50%, transparent) !important; color: var(--ptx); min-width: 0; }
+#horlogia-pop .hzp-wx a span { display: block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: clip; text-align: center; }
+#horlogia-pop .hzp-wx a.on { box-shadow: 0 0 0 2px var(--pacc), 0 0 12px -2px var(--wc); }
+#horlogia-pop.hz-th-parchemin .hzp-wx a { background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 30%, #fff6df), color-mix(in srgb, var(--wc) 12%, #fff6df)) !important; border-color: color-mix(in srgb, var(--wc) 55%, #6b4a2a) !important; color: #2b1d10; }
+#horlogia-pop.hz-th-parchemin.hz-th-parchemin-dark .hzp-wx a { background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 26%, #1a120a), color-mix(in srgb, var(--wc) 8%, #0e0a06)) !important; border-color: color-mix(in srgb, var(--wc) 50%, #c9a46a) !important; color: #f1e2bd; }
+#horlogia-pop.hz-th-parchemin.hz-th-parchemin-dark .hzp-wx a i { color: color-mix(in srgb, var(--wc) 75%, #fff); }
+#horlogia-pop.hz-th-parchemin.hz-th-parchemin-dark .hzp-cats a { background: linear-gradient(180deg, #3a2a1a, #1a120a); color: #f1e2bd; border-color: #c9a46a; } #horlogia-pop.hz-th-parchemin.hz-th-parchemin-dark .hzp-cats a.on { background: linear-gradient(180deg, #d9b25a, #8a6420); color: #1a1006; }
+#horlogia-pop.hz-th-steampunk .hzp-wx a { background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 22%, #120b06), #120b06cc) !important; color: #f3e3c0; }
+/* degrés : −5 −2 −1 en rouge, +1 +2 +5 en vert */
+#horlogia-pop .hzp-top { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+#horlogia-pop .hzp-temp { margin: 0; gap: 8px; } #horlogia-pop .hzp-temp span { display: flex; gap: 4px; }
+#horlogia-pop .hzp-temp .tv { flex-direction: row; align-items: center; gap: 4px; }
+#horlogia-pop .hzp-temp span a { min-width: 38px; height: 34px; font: 800 14px var(--kf) !important; }
+#horlogia-pop .hzp-temp span.m a { color: #ff6a6a !important; border-color: #ff5d6c88 !important; background: linear-gradient(180deg, #ff5d6c22, #ff5d6c0a), var(--pbtn) !important; }
+#horlogia-pop .hzp-temp span.p a { color: #4ee08a !important; border-color: #3ddc8488 !important; background: linear-gradient(180deg, #3ddc8422, #3ddc840a), var(--pbtn) !important; }
+#horlogia-pop.hz-th-parchemin:not(.hz-th-parchemin-dark) .hzp-temp span.m a { color: #a01818 !important; } #horlogia-pop.hz-th-parchemin:not(.hz-th-parchemin-dark) .hzp-temp span.p a { color: #1f6a2a !important; }
+/* encadré saison dans la bulle météo */
+#horlogia-pop .hzp-sea { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 7px 9px; border-radius: 9px; border: 1px solid var(--pbtnbd); background: color-mix(in srgb, var(--pacc) 6%, transparent); }
+#horlogia-pop .hzp-sea > b { font: 700 11.5px var(--phead); letter-spacing: .08em; text-transform: uppercase; color: var(--pacc); }
+#horlogia-pop .hzp-sea > span { display: flex; flex-wrap: wrap; gap: 4px; }
+#horlogia-pop .hzp-sea a { --xc: #9fb0d4; display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 9px; border-radius: 13px; cursor: pointer; font: 700 12px var(--pfont); color: var(--ptx); background: color-mix(in srgb, var(--xc) 14%, transparent); border: 1px solid color-mix(in srgb, var(--xc) 45%, transparent); }
+#horlogia-pop .hzp-sea a i { color: var(--xc); } #horlogia-pop .hzp-sea a.on { background: color-mix(in srgb, var(--xc) 34%, transparent); border-color: var(--xc); box-shadow: 0 0 8px -2px var(--xc); }
+#horlogia-pop .hzp-sea > em { margin-left: auto; font: italic 600 11px var(--pfont); color: var(--pdim); }
+#horlogia-pop.hz-th-parchemin:not(.hz-th-parchemin-dark) .hzp-sea a i { color: color-mix(in srgb, var(--xc) 55%, #2b1d10); }
+
+/* barre du haut : seule la case météo prend la couleur de la météo */
+#horlogia-hud .hz-wx { border-radius: 9px; background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 26%, transparent), color-mix(in srgb, var(--wc) 10%, transparent)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wc) 45%, transparent); }
+#horlogia-hud .hz-wx i { color: var(--wc) !important; text-shadow: 0 0 6px color-mix(in srgb, var(--wc) 60%, transparent) !important; }
+#horlogia-hud.hz-th-parchemin:not(.hz-th-parchemin-dark) .hz-wx { background: color-mix(in srgb, var(--wc) 22%, #fff6df); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wc) 55%, #6b4a2a); }
+#horlogia-hud.hz-th-parchemin:not(.hz-th-parchemin-dark) .hz-wx i { color: color-mix(in srgb, var(--wc) 55%, #3a2410) !important; text-shadow: none !important; }
+
+/* Play / Pause à côté de l'heure ou posé dessus */
+#horlogia-hud .pp-next { display: grid; place-items: center; width: 30px; height: 30px; margin-left: -4px; border-radius: 50%; cursor: pointer; background: #3ddc8422; border: 1px solid #3ddc84aa; color: #7dffb8; font-size: 12px; }
+#horlogia-hud .pp-next.on { background: #ff9a3d22; border-color: #ff9a3daa; color: #ffc890; } #horlogia-hud .pp-next:hover { filter: brightness(1.25); }
+#horlogia-hud .hz-time.has-pp { position: relative; }
+#horlogia-hud .hz-time .pp-on { position: absolute; right: -6px; bottom: -6px; width: 17px; height: 17px; display: grid; place-items: center; border-radius: 50%; cursor: pointer; background: #0a0e1ee6; border: 1px solid #3ddc84; color: #7dffb8; font-size: 7.5px; box-shadow: 0 0 6px -1px #3ddc84; z-index: 2; }
+#horlogia-hud.play .hz-time .pp-on { border-color: #ff9a3d; color: #ffc890; box-shadow: 0 0 6px -1px #ff9a3d; } #horlogia-hud .hz-time .pp-on:hover { transform: scale(1.15); }
+
+/* compteurs 1.8 : plus de barre de raccourcis, bouton Ajouter et liste de catégories */
+#horlogia-cnt .hzk-r .q { display: none !important; }
+#horlogia-cnt.can .hzk-r .v { user-select: none; }
+#horlogia-cnt .hzk-add { display: flex; align-items: center; justify-content: center; gap: 6px; height: 30px; border-radius: 8px; cursor: pointer; border: 1px dashed var(--kbd); color: var(--kd); font: 700 12.5px var(--kf); }
+#horlogia-cnt .hzk-add:hover, #horlogia-cnt .hzk-add.on { border-style: solid; border-color: var(--ka); color: var(--ka); }
+#horlogia-cnt .hzk-pick { display: flex; flex-direction: column; gap: 3px; padding: 6px; border-radius: 8px; border: 1px solid var(--kbd); background: #0004; }
+#horlogia-cnt .hzk-pick a { --kc: #5ee0ff; display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 8px; border-radius: 6px; cursor: pointer; color: var(--kt); font: 700 12.5px var(--kf); }
+#horlogia-cnt .hzk-pick a span { flex: 1; } #horlogia-cnt .hzk-pick a .ic { width: 16px; text-align: center; color: var(--kc); } #horlogia-cnt .hzk-pick a > i:last-child { color: var(--kd); }
+#horlogia-cnt .hzk-pick a.on { background: color-mix(in srgb, var(--kc) 14%, transparent); } #horlogia-cnt .hzk-pick a.on > i:last-child { color: var(--ka); } #horlogia-cnt .hzk-pick a:hover { background: color-mix(in srgb, var(--kc) 20%, transparent); }
+#horlogia-cnt .hzk-pick a.mg { justify-content: center; margin-top: 3px; border-top: 1px solid var(--kbd); border-radius: 0 0 6px 6px; color: var(--kd); }
+#horlogia-cnt.hz-th-parchemin:not(.hz-th-parchemin-dark) .hzk-pick { background: #fff6df88; }
+
+/* fenêtre des catégories (même style que le chrono de combat) */
+#horlogia-cntcat { position: fixed; top: 90px; left: 50%; transform: translateX(-50%); z-index: 1001; width: 440px; padding: 10px 16px 14px; border-radius: 16px; background: var(--kp); border: 1.5px solid var(--kbd); box-shadow: 0 14px 34px #000c; color: var(--kt); font-family: var(--kf); }
+#horlogia-cntcat.hz-th-parchemin { border-radius: 4px; } #horlogia-cntcat.hz-th-cyberpunk { border-radius: 0; border-color: #ff2bd6; box-shadow: 0 0 22px -4px #ff2bd6, 0 14px 34px #000c; }
+#horlogia-cntcat .hzq-top { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 30px 6px; cursor: grab; font: 800 13px "Orbitron", var(--kf); letter-spacing: .2em; text-transform: uppercase; color: var(--ka); }
+#horlogia-cntcat.hz-th-parchemin .hzq-top { font: 400 16px "IM Fell English SC", serif; letter-spacing: .12em; } #horlogia-cntcat.hz-th-steampunk .hzq-top { font: 400 14px "Special Elite", monospace; }
+#horlogia-cntcat .hzq-x { position: absolute; right: -6px; top: -4px; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; cursor: pointer; background: var(--kb); border: 1px solid var(--kbd); color: var(--ktx); letter-spacing: 0; } #horlogia-cntcat .hzq-x:hover { background: #c0283c; color: #fff; }
+#horlogia-cntcat .hzq-hint { margin: 2px 0 8px; text-align: center; font: italic 600 12px var(--kf); color: var(--kd); }
+#horlogia-cntcat .hzq-list { display: flex; flex-direction: column; gap: 5px; max-height: 52vh; overflow-y: auto; }
+#horlogia-cntcat .hzq-r { --kc: #5ee0ff; display: flex; align-items: center; gap: 6px; padding: 5px 7px; border-radius: 8px; background: color-mix(in srgb, var(--kc) 10%, transparent); border: 1px solid color-mix(in srgb, var(--kc) 40%, transparent); }
+#horlogia-cntcat .hzq-r label.ic { position: relative; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 6px; border: 1px solid var(--kbd); color: var(--kc); cursor: pointer; flex: none; }
+#horlogia-cntcat .hzq-r label.ic select { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+#horlogia-cntcat .hzq-r input:not([type=color]) { flex: 1; min-width: 0; height: 30px; padding: 0 8px; font: 700 13.5px var(--kf); background: var(--ki) !important; color: var(--kit) !important; border: 1px solid var(--kbd) !important; border-radius: 6px; }
+#horlogia-cntcat .hzq-r input[type=color] { width: 30px; height: 30px; padding: 0; border: 0; background: none; cursor: pointer; flex: none; }
+#horlogia-cntcat .hzq-r a { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 6px; cursor: pointer; color: var(--kd); flex: none; } #horlogia-cntcat .hzq-r a:hover { color: var(--kt); background: #ffffff10; } #horlogia-cntcat .hzq-r a.del:hover { color: #ff5d6c; }
+#horlogia-cntcat .hzq-f { display: flex; gap: 8px; margin-top: 10px; }
+#horlogia-cntcat .hzq-f a { flex: 1; height: 32px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 8px; cursor: pointer; background: var(--kb); border: 1px solid var(--kbd); color: var(--ktx); font: 700 13px var(--kf); }
+#horlogia-cntcat .hzq-f a.ok { background: linear-gradient(180deg, #2fd27a, #127a44); border-color: #7dffb8; color: #fff; } #horlogia-cntcat .hzq-f a:hover { filter: brightness(1.15); }
+/* 1.8.1 : teintes météo plus marquées, catégories sur une ligne */
+#horlogia-pop .hzp-wx a { background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 34%, transparent), color-mix(in srgb, var(--wc) 14%, transparent)) !important; }
+#horlogia-pop.hz-th-parchemin.hz-th-parchemin-dark .hzp-wx a { background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 36%, #1a120a), color-mix(in srgb, var(--wc) 14%, #0e0a06)) !important; }
+#horlogia-hud .hz-wx { background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 36%, transparent), color-mix(in srgb, var(--wc) 16%, transparent)) !important; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wc) 60%, transparent) !important; }
+#horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark .hz-wx { background: linear-gradient(180deg, color-mix(in srgb, var(--wc) 38%, #1a120a), color-mix(in srgb, var(--wc) 16%, #0e0a06)) !important; }
+#horlogia-pop .hzp-cats { flex-wrap: nowrap; gap: 4px; } #horlogia-pop .hzp-cats a { flex: 1 1 auto; padding: 0 7px !important; font-size: 12px !important; white-space: nowrap; }
+
+/* ══ 1.9 ══ */
+/* météo : 3 colonnes, icône à gauche et nom en entier sur une ligne, taille normale */
+#horlogia-pop .hzp-wx { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; width: 600px; gap: 6px; }
+#horlogia-pop .hzp-wx a { flex-direction: row !important; justify-content: flex-start; gap: 8px !important; height: 40px; padding: 0 10px !important; text-align: left !important; }
+#horlogia-pop .hzp-wx a i { flex: none; width: 20px; font-size: 17px !important; text-align: center; }
+#horlogia-pop .hzp-wx a span { width: auto !important; flex: 1; min-width: 0; font-size: 12.5px !important; line-height: 1.1 !important; text-align: left !important; white-space: nowrap; overflow: visible !important; }
+#horlogia-pop.hz-th-steampunk .hzp-wx a span { font-size: 11.5px !important; letter-spacing: -.02em; }
+#horlogia-pop.hz-th-parchemin .hzp-wx a span { font-size: 13px !important; }
+/* chrono : taille et lueur */
+#horlogia-combat.sz-s { zoom: .8; } #horlogia-combat.sz-l { zoom: 1.25; }
+#horlogia-combat.nogl.done { animation: none !important; }
+/* barre : options */
+#horlogia-hud.notint .hz-wx { background: none !important; box-shadow: none !important; }
+#horlogia-hud.nosea .hz-season { display: none !important; }
+#horlogia-hud.fx-l .hz-banner { opacity: .45; } #horlogia-hud.fx-h .hz-banner { opacity: 1; filter: saturate(1.5) brightness(1.2); } #horlogia-hud.fx-h .hz-banner .b2 { opacity: .85; }
+/* compteurs : crayon et croix sur chaque ligne, version compacte */
+#horlogia-cnt .hzk-r .rb { flex: none; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 5px; cursor: pointer; color: var(--kd); font-size: 11px; border: 1px solid transparent; }
+#horlogia-cnt .hzk-r .rb:hover { color: var(--kt); border-color: var(--kbd); background: #ffffff10; } #horlogia-cnt .hzk-r .rb.x:hover { color: #ff5d6c; border-color: #ff5d6c88; }
+#horlogia-cnt .hzk-r .v { margin-right: 2px; }
+#horlogia-cnt.sz-s { width: 220px; } #horlogia-cnt.sz-s .hzk-r { height: 30px; } #horlogia-cnt.sz-s .hzk-r .v { font-size: 16px !important; } #horlogia-cnt.sz-s .hzk-r .n { font-size: 12px; }
+/* onglet Réglages */
+.horlogia-app .hz-oc h3 { color: var(--oc) !important; }
+.horlogia-app .hz-oc { border-left: 3px solid var(--oc) !important; display: flex; flex-direction: column; gap: 8px; }
+.horlogia-app .hz-orow { display: grid; grid-template-columns: 190px 1fr; align-items: center; gap: 4px 10px; }
+.horlogia-app .hz-orow > span { font-weight: 700; color: #dfe6ff; } .horlogia-app .hz-orow > div { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.horlogia-app .hz-orow > small { grid-column: 2; color: var(--hz-dim); font-size: 11.5px; }
+.horlogia-app .hz-orow select { min-width: 200px; } .horlogia-app input.w12 { width: 220px; } .horlogia-app input.w8 { width: 110px; }
+.horlogia-app .hz-vol { width: 120px; }
+.horlogia-app .hz-ochk { display: flex; flex-wrap: wrap; gap: 5px; }
+.horlogia-app .hz-ochk label { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 14px; border: 1px solid #4a64a8; background: #0b1230; cursor: pointer; font-size: 12px; color: #c9d4f2; }
+.horlogia-app .hz-ochk label input { display: none; } .horlogia-app .hz-ochk label:has(input:checked) { border-color: var(--oc); background: color-mix(in srgb, var(--oc) 20%, #0b1230); color: #fff; }
+.horlogia-app .hz-oc > .hz-btn { align-self: flex-start; }
+.horlogia-app .hz-ochk label { opacity: .55; } .horlogia-app .hz-ochk label:has(input:checked) { opacity: 1; background: color-mix(in srgb, var(--oc) 34%, #0b1230); box-shadow: 0 0 8px -3px var(--oc); }
+.horlogia-app .hz-ochk label:has(input:checked)::after { content: "\f00c"; font: 900 10px "Font Awesome 6 Pro", "Font Awesome 6 Free"; color: var(--oc); }
+
+/* ══ 1.10 ══ */
+#horlogia-hud .hz-wx .hz-wxn { overflow: visible !important; text-overflow: clip !important; white-space: nowrap; max-width: none !important; font-size: .9em; }
+#horlogia-hud .hz-wx { max-width: none !important; flex: none; }
+/* Play à côté de l'heure : même bouton que dans les contrôles du thème, sans séparateur */
+#horlogia-hud .hz-ctl.hz-ppn { padding-left: 0; border-left: 0; margin-left: -4px; }
+/* Play sur l'heure : l'heure entière est le bouton ; le petit signe remplace le point */
+#horlogia-hud .hz-time.pp-time { cursor: pointer; }
+#horlogia-hud .hz-time .hz-ppi { display: inline-grid; place-items: center; width: 14px; font-size: 10px; color: #ff5d6c; text-shadow: 0 0 6px currentColor; }
+#horlogia-hud.play .hz-time .hz-ppi { color: #3ddc84; }
+#horlogia-hud.hz-th-parchemin .hz-time .hz-ppi { color: #6b4a2a; text-shadow: none; } #horlogia-hud.hz-th-parchemin.play .hz-time .hz-ppi { color: #8e1b1b; }
+#horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark .hz-time .hz-ppi { color: #c9a46a; } #horlogia-hud.hz-th-parchemin.hz-th-parchemin-dark.play .hz-time .hz-ppi { color: #ffd98a; }
+#horlogia-hud.hz-th-steampunk .hz-time .hz-ppi { color: #c9a35a; text-shadow: none; } #horlogia-hud.hz-th-steampunk.play .hz-time .hz-ppi { color: #ffb23d; text-shadow: 0 0 6px #ffb23d; }
+#horlogia-hud .hz-time.pp-time:hover .hz-ppi { transform: scale(1.25); }
+/* onglets Combat / Météo / Saison / Compteurs : la page elle-même, sans encadré */
+.horlogia-app .hz-opts.one { display: block; max-width: 860px; }
+.horlogia-app .hz-opts.one .hz-card2 { border: 0 !important; background: none !important; box-shadow: none !important; padding: 4px 6px; gap: 12px; }
+.horlogia-app .hz-opts.one .hz-card2 > h3 { font-size: 16px; margin-bottom: 4px; }
+.horlogia-app .hz-tabs { flex-wrap: wrap; }
+#horlogia-hud .hz-wx { width: auto !important; min-width: 158px; overflow: visible !important; padding: 2px 8px !important; }
+#horlogia-hud .hz-wx b { flex: none; }
+/* 1.13 — journaux du jour (Interface - Manhwa) dans le calendrier */
+.hz-jc { --ec: #e8dcc0; display: flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: 4px; font: 600 11px Georgia, "Times New Roman", serif; color: #2a2116; cursor: pointer; background: linear-gradient(180deg, #f6eedb, #e6d8b8); border-left: 3px solid var(--ec); box-shadow: 0 1px 3px #0006; }
+.hz-jc i { font-size: 10px; color: #4a3b26; } .hz-jc span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hz-jc:hover { filter: brightness(1.08); }
+.hz-md.jr { box-shadow: inset 0 -3px 0 #e8dcc0; }
+.hz-jh { margin-top: 4px; }
+.hz-jl { background: linear-gradient(90deg, #f6eedb22, transparent) !important; }
+.hz-jl i { color: #e8dcc0 !important; }
+
+/* 1.13.1 : boutons − / + du temps des groupes jamais rognés (les +5, +10, +30…) : bloc pleine largeur, boutons qui rétrécissent, deux lignes quand c'est étroit */
+.horlogia-app .hz-steps { container-type: inline-size; }
+.horlogia-app .hz-st { grid-template-columns: 74px minmax(0, 1fr) minmax(0, 1fr); }
+.horlogia-app .hz-st span { min-width: 0; }
+.horlogia-app .hz-st a { flex: 1 1 0; min-width: 0; padding: 0 2px; font-size: 12.5px; white-space: nowrap; overflow: hidden; }
+@container (max-width: 520px) { .horlogia-app .hz-st { grid-template-columns: 66px minmax(0, 1fr); row-gap: 4px; } .horlogia-app .hz-st > b { grid-row: span 2; } .horlogia-app .hz-st span.m { justify-content: stretch; } }

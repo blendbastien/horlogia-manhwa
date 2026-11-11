@@ -1,0 +1,36 @@
+{
+  "id": "horlogia-manhwa",
+  "title": "Horlogia - Manhwa",
+  "description": "Temps du monde pour la suite Manhwa : barre du haut (date, heure qui défile, saison, météo, lune, fêtes) calée sur Play / Pause du MJ, calendriers entièrement modifiables, une date et un calendrier par groupe de joueurs, fêtes et événements sur un ou plusieurs jours, météo, mode combat (chrono détaché), import depuis Calendaria. Remplace Calendaria et Hourglass.",
+  "version": "1.13.1",
+  "authors": [
+    {
+      "name": "Bastien"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/horlogia.css"
+  ],
+  "socket": true,
+  "relationships": {
+    "systems": [
+      {
+        "id": "manhwa-sheet",
+        "type": "system",
+        "compatibility": {
+          "minimum": "1.33.0"
+        }
+      }
+    ]
+  },
+  "url": "https://github.com/blendbastien/horlogia-manhwa",
+  "manifest": "https://github.com/blendbastien/horlogia-manhwa/releases/latest/download/module.json",
+  "download": "https://github.com/blendbastien/horlogia-manhwa/releases/latest/download/horlogia-manhwa.zip"
+}
